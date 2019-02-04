@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 **Data Source**: https://archive.ics.uci.edu/ml/datasets/Mushroom
 
 ```{r data}
-mushrooms<-read.csv("https://archive.ics.uci.edu//ml/machine-learning-databases/mushroom/agaricus-lepiota.data", header= FALSE, sep=",")
+mushrooms<-read.csv(file="agaricus-lepiota.data.csv", header= FALSE, sep=",")
 ```
 
 ## Original Mushroom Data
