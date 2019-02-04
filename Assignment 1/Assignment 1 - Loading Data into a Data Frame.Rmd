@@ -1,0 +1,110 @@
+---
+title: "Data 607 Assignment 1 - Mushrooms Dataset"
+author: "Mary Anna Kivenson"
+date: "2/3/2019"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Importing the Mushrooms Dataset
+
+**Data Source**: https://archive.ics.uci.edu/ml/datasets/Mushroom
+
+```{r data}
+mushrooms<-read.csv("https://archive.ics.uci.edu//ml/machine-learning-databases/mushroom/agaricus-lepiota.data", header= FALSE, sep=",")
+```
+
+## Original Mushroom Data
+
+```{r columns}
+head(mushrooms)
+```
+
+
+## Subsetting and Renaming Data 
+The columns included in the subset of the original mushroom data are cap shape, cap color, stalk shape, and ring number. These columns are all descriptors of the appearance of a mushroom.
+```{r subset}
+library(plyr)
+mushrooms_subset <- subset(mushrooms, select=c(1,2,4,11,19))
+colnames(mushrooms_subset) <- c("classes",'cap_shape',"cap_color","stalk_shape","ring_number")
+mushrooms_subset$classes <- revalue(mushrooms_subset$classes, 
+                                    c("p" = "poisonous", "e" = "edible"))
+mushrooms_subset$cap_shape <- revalue(mushrooms_subset$cap_shape,
+                                      c("b"="bell", "c"="conical", "x"="convex", "f"="flat",
+                                        "k"="knobbed", "s"="sunken"))
+mushrooms_subset$cap_color <- revalue(mushrooms_subset$cap_color,
+                                      c("n"="brown", "b"="buff", "c"="cinnamon", "g"="gray",
+                                        "r"="green", "p"="pink", "u"="purple", "e"="red",
+                                        "w"="white", "y"="yellow"))
+mushrooms_subset$stalk_shape <- revalue(mushrooms_subset$stalk_shape, 
+                                    c("e" = "enlarging", "t" = "tapering"))
+mushrooms_subset$ring_number <- revalue(mushrooms_subset$ring_number, 
+                                    c("n" = "none", "o" = "one", "t" = "two"))
+head(mushrooms_subset)
+```
+
+## Edible Mushrooms
+
+Without looking at column 1 (classes), how can we determine if a mushroom is poisonous or edible?
+
+**Proportion Table of Edible and Poisonous Mushrooms - by Cap Shape**
+
+The table below shows the proportion of edible and poisonous mushrooms for each mushroom cap shape type. *Observations: In the sample, all mushrooms with sunken caps are edible, and all mushrooms with conical caps are poisonous. Most mushrooms with bell caps are edible and most mushrooms with knobbed caps are poisonous.*
+```{r summary-capshape}
+prop.table(table(mushrooms_subset$classes, mushrooms_subset$cap_shape),2)
+```
+**Proportion Table of Edible and Poisonous Mushrooms - by Cap Color**
+
+The table below shows the proportion of edible and poisonous mushrooms for each mushroom cap color. *Interesting observations: in the sample, all mushrooms with green and purple caps are edible. Most mushrooms with cinnamon caps are edible and most mushrooms with buff caps are poisonous*
+```{r summary-capcolor}
+prop.table(table(mushrooms_subset$classes, mushrooms_subset$cap_color),2)
+```
+**Proportion Table of Edible and Poisonous Mushrooms - by Stalk Shape**
+
+The table below shows the proportion of edible and poisonous mushrooms for each mushroom stalk shape. There does not seem to be a relationship between stalk shape and whether a mushroom is edible.
+```{r summary-stalkshape}
+prop.table(table(mushrooms_subset$classes, mushrooms_subset$stalk_shape),2)
+```
+
+**Proportion Table of Edible and Poisonous Mushrooms - by Ring Number**
+
+The table below shows the proportion of edible and poisonous mushrooms by number of rings on a mushroom. *All sampled mushrooms with no rings are poisonous, and most mushrooms with two rings are edible.* 
+```{r summary-ringno}
+prop.table(table(mushrooms_subset$classes, mushrooms_subset$ring_number),2)
+```
+
+##Subset of Edible Mushrooms
+
+From the proportion tables above, we determined that the following characteristics indicate that a mushroom is safe to eat:
+
+* Sunken cap shape
+* Bell cap shape
+* Green cap color
+* Purple cap color
+* Cinnamon cap color (mostly)
+* Ring number of 2 (mostly)
+
+The following characteristics indicate that a mushroom is poisonous:
+
+* Conical cap shape
+* No rings
+* Buff cap color (mostly)
+* Knobbed cap shape (mostly)
+
+Suppose we need to determine if a mushroom is edible based *only* on physical characteristics. We can create another subset of the mushrooms data specifying the requirements above.
+
+```{r edible-subset}
+edible_mushrooms <- subset(mushrooms_subset, cap_shape == 'sunken' | cap_shape == 'bell' | cap_color == 'green' | cap_color == 'purple' | cap_color == 'cinnamon' | ring_number == 'two' & cap_shape != 'conical' & ring_number != 'none' & cap_color != 'buff' & cap_shape != 'knobbed')
+
+summary(edible_mushrooms$classes)
+
+summary(mushrooms_subset$classes)
+```
+
+In the new edible mushrooms subset, 89.6% of mushrooms are safe to eat; in the original dataset, only 51.8% of mushrooms are edible. Although there are still poisonous mushrooms included in the edible mushrooms subset, the proportion of edible mushrooms is significantly more than in the original subset. 

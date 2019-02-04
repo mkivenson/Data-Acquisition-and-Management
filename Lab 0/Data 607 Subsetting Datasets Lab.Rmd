@@ -1,0 +1,57 @@
+---
+title: "Data 607 Subsetting Datasets Lab"
+author: "Mary Anna Kivenson"
+date: "2/3/2019"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Importing the Bridges Dataset
+
+**Data Source**: https://archive.ics.uci.edu/ml/datasets/Pittsburgh+Bridges
+
+```{r data}
+bridges<-read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/bridges/bridges.data.version1", header= FALSE, sep=",")
+```
+
+## Renaming the Columns
+
+```{r columns}
+colnames(bridges) <- c("IDENTIF","RIVER","LOCATION","ERECTED","PURPOSE","LENGTH","LANES",
+                       "CLEAR-G","T-OR-D","MATERIAL","SPAN","REL-L","TYPE")
+head(bridges)
+```
+
+
+## Subsetting the Data
+
+```{r subset}
+bridges_subset <- subset(bridges, PURPOSE=="HIGHWAY", select=c(ERECTED,PURPOSE,MATERIAL))
+bridges_subset
+```
+
+## Summarizing the Data
+
+```{r summary}
+summary(bridges_subset)
+```
+
+##Histogram of Erected Bridges - Timeline
+This histogram shows the amount of highways built in each grouping of 10 years. Overall, the distribution of highways built over the years is left skewed - the majority of bridges were built prior to 1930. The historgram is also bimodal, showing bursts in highway construction between 1890 - 1900 and 1920 - 1930. 
+```{r erected-hist}
+hist(bridges_subset$ERECTED, breaks = 20)
+```
+
+##Year vs Highway Material Boxplot
+The boxplot below shows the median years that each highway material was used. Based on the plot, it seems like the prefered highway material was wood until 1875, followed by iron until 1900 and steel from 1900 onwards.
+```{r boxplot}
+require(MASS) 
+data(iris) 
+boxplot(bridges_subset$ERECTED ~ bridges_subset$MATERIAL, at=rank(tapply(bridges_subset$ERECTED, bridges_subset$MATERIAL, median)))
+```
