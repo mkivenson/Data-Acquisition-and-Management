@@ -1,0 +1,1901 @@
+country,year,cases
+Afghanistan,1995,
+Afghanistan,1996,
+Afghanistan,1997,128
+Afghanistan,1998,1778
+Afghanistan,1999,745
+Afghanistan,2000,2666
+Afghanistan,2001,4639
+Afghanistan,2002,6509
+Afghanistan,2003,6528
+Afghanistan,2004,8245
+Afghanistan,2005,9949
+Afghanistan,2006,12469
+Afghanistan,2007,13213
+Afghanistan,2008,13136
+Afghanistan,2009,12503
+Afghanistan,2010,12947
+Afghanistan,2011,15542
+Afghanistan,2012,15774
+Afghanistan,2013,
+Algeria,1995,
+Algeria,1996,
+Algeria,1997,8902
+Algeria,1998,
+Algeria,1999,7088
+Algeria,2000,8050
+Algeria,2001,7953
+Algeria,2002,8246
+Algeria,2003,7641
+Algeria,2004,7979
+Algeria,2005,8654
+Algeria,2006,7396
+Algeria,2007,8439
+Algeria,2008,8646
+Algeria,2009,8402
+Algeria,2010,8299
+Algeria,2011,7790
+Algeria,2012,7510
+Algeria,2013,7124
+Angola,1995,4592
+Angola,1996,8016
+Angola,1997,8201
+Angola,1998,7322
+Angola,1999,9242
+Angola,2000,8149
+Angola,2001,6805
+Angola,2002,17988
+Angola,2003,18971
+Angola,2004,20333
+Angola,2005,20410
+Angola,2006,21499
+Angola,2007,21422
+Angola,2008,22562
+Angola,2009,22488
+Angola,2010,21146
+Angola,2011,26434
+Angola,2012,21124
+Angola,2013,21661
+Argentina,1995,
+Argentina,1996,5787
+Argentina,1997,5317
+Argentina,1998,5062
+Argentina,1999,4769
+Argentina,2000,4519
+Argentina,2001,5506
+Argentina,2002,5383
+Argentina,2003,4959
+Argentina,2004,4666
+Argentina,2005,4636
+Argentina,2006,7908
+Argentina,2007,9376
+Argentina,2008,8959
+Argentina,2009,7121
+Argentina,2010,6827
+Argentina,2011,9219
+Argentina,2012,8250
+Argentina,2013,8892
+Azerbaijan,1995,90
+Azerbaijan,1996,1058
+Azerbaijan,1997,975
+Azerbaijan,1998,161
+Azerbaijan,1999,763
+Azerbaijan,2000,153
+Azerbaijan,2001,
+Azerbaijan,2002,1661
+Azerbaijan,2003,1161
+Azerbaijan,2004,1472
+Azerbaijan,2005,1561
+Azerbaijan,2006,4429
+Azerbaijan,2007,
+Azerbaijan,2008,
+Azerbaijan,2009,1410
+Azerbaijan,2010,4792
+Azerbaijan,2011,1130
+Azerbaijan,2012,4616
+Azerbaijan,2013,4528
+Bangladesh,1995,6023
+Bangladesh,1996,7551
+Bangladesh,1997,30294
+Bangladesh,1998,37623
+Bangladesh,1999,37674
+Bangladesh,2000,37983
+Bangladesh,2001,40487
+Bangladesh,2002,46771
+Bangladesh,2003,53618
+Bangladesh,2004,62500
+Bangladesh,2005,84848
+Bangladesh,2006,140948
+Bangladesh,2007,104296
+Bangladesh,2008,187471
+Bangladesh,2009,
+Bangladesh,2010,150856
+Bangladesh,2011,148198
+Bangladesh,2012,161790
+Bangladesh,2013,181637
+Belarus,1995,
+Belarus,1996,
+Belarus,1997,
+Belarus,1998,
+Belarus,1999,
+Belarus,2000,
+Belarus,2001,
+Belarus,2002,838
+Belarus,2003,1018
+Belarus,2004,221
+Belarus,2005,
+Belarus,2006,5142
+Belarus,2007,4872
+Belarus,2008,4634
+Belarus,2009,1631
+Belarus,2010,4345
+Belarus,2011,4043
+Belarus,2012,3842
+Belarus,2013,4470
+Benin,1995,1839
+Benin,1996,1868
+Benin,1997,1936
+Benin,1998,1988
+Benin,1999,2202
+Benin,2000,2286
+Benin,2001,2293
+Benin,2002,2411
+Benin,2003,2434
+Benin,2004,2582
+Benin,2005,2739
+Benin,2006,2943
+Benin,2007,2770
+Benin,2008,2966
+Benin,2009,2960
+Benin,2010,2973
+Benin,2011,3331
+Benin,2012,3171
+Benin,2013,3129
+Bolivia (Plurinational State of),1995,
+Bolivia (Plurinational State of),1996,6949
+Bolivia (Plurinational State of),1997,6458
+Bolivia (Plurinational State of),1998,6581
+Bolivia (Plurinational State of),1999,6673
+Bolivia (Plurinational State of),2000,6458
+Bolivia (Plurinational State of),2001,6672
+Bolivia (Plurinational State of),2002,6829
+Bolivia (Plurinational State of),2003,6344
+Bolivia (Plurinational State of),2004,6213
+Bolivia (Plurinational State of),2005,6278
+Bolivia (Plurinational State of),2006,5788
+Bolivia (Plurinational State of),2007,5400
+Bolivia (Plurinational State of),2008,6048
+Bolivia (Plurinational State of),2009,7679
+Bolivia (Plurinational State of),2010,7937
+Bolivia (Plurinational State of),2011,8110
+Bolivia (Plurinational State of),2012,7811
+Bolivia (Plurinational State of),2013,8327
+Botswana,1995,
+Botswana,1996,
+Botswana,1997,2686
+Botswana,1998,
+Botswana,1999,2855
+Botswana,2000,3095
+Botswana,2001,3059
+Botswana,2002,3337
+Botswana,2003,3050
+Botswana,2004,3128
+Botswana,2005,3170
+Botswana,2006,3252
+Botswana,2007,3002
+Botswana,2008,7826
+Botswana,2009,7966
+Botswana,2010,6560
+Botswana,2011,5865
+Botswana,2012,5785
+Botswana,2013,6834
+Brazil,1995,
+Brazil,1996,
+Brazil,1997,
+Brazil,1998,
+Brazil,1999,37737
+Brazil,2000,80488
+Brazil,2001,37491
+Brazil,2002,40723
+Brazil,2003,39883
+Brazil,2004,42881
+Brazil,2005,42093
+Brazil,2006,74358
+Brazil,2007,71827
+Brazil,2008,70484
+Brazil,2009,71572
+Brazil,2010,70848
+Brazil,2011,71202
+Brazil,2012,71072
+Brazil,2013,75996
+Burkina Faso,1995,689
+Burkina Faso,1996,899
+Burkina Faso,1997,899
+Burkina Faso,1998,1331
+Burkina Faso,1999,1248
+Burkina Faso,2000,1287
+Burkina Faso,2001,1518
+Burkina Faso,2002,1526
+Burkina Faso,2003,1703
+Burkina Faso,2004,1926
+Burkina Faso,2005,2294
+Burkina Faso,2006,2659
+Burkina Faso,2007,3704
+Burkina Faso,2008,2756
+Burkina Faso,2009,3061
+Burkina Faso,2010,3041
+Burkina Faso,2011,3450
+Burkina Faso,2012,3583
+Burkina Faso,2013,3616
+Burundi,1995,1109
+Burundi,1996,1505
+Burundi,1997,2226
+Burundi,1998,2921
+Burundi,1999,2924
+Burundi,2000,
+Burundi,2001,3040
+Burundi,2002,2791
+Burundi,2003,3017
+Burundi,2004,3087
+Burundi,2005,3262
+Burundi,2006,3119
+Burundi,2007,3595
+Burundi,2008,3610
+Burundi,2009,3974
+Burundi,2010,7379
+Burundi,2011,6494
+Burundi,2012,6708
+Burundi,2013,7249
+Cambodia,1995,12485
+Cambodia,1996,12065
+Cambodia,1997,
+Cambodia,1998,13849
+Cambodia,1999,15744
+Cambodia,2000,14823
+Cambodia,2001,14361
+Cambodia,2002,17258
+Cambodia,2003,18923
+Cambodia,2004,18978
+Cambodia,2005,21001
+Cambodia,2006,19294
+Cambodia,2007,19421
+Cambodia,2008,19860
+Cambodia,2009,17863
+Cambodia,2010,17454
+Cambodia,2011,15876
+Cambodia,2012,14841
+Cambodia,2013,14083
+Cameroon,1995,2857
+Cameroon,1996,2313
+Cameroon,1997,3548
+Cameroon,1998,4374
+Cameroon,1999,5832
+Cameroon,2000,3960
+Cameroon,2001,4696
+Cameroon,2002,7365
+Cameroon,2003,10692
+Cameroon,2004,11218
+Cameroon,2005,13001
+Cameroon,2006,12870
+Cameroon,2007,13220
+Cameroon,2008,14237
+Cameroon,2009,14487
+Cameroon,2010,14464
+Cameroon,2011,14927
+Cameroon,2012,15016
+Cameroon,2013,
+Central African Republic,1995,1794
+Central African Republic,1996,1984
+Central African Republic,1997,2273
+Central African Republic,1998,2637
+Central African Republic,1999,2725
+Central African Republic,2000,
+Central African Republic,2001,1382
+Central African Republic,2002,2758
+Central African Republic,2003,
+Central African Republic,2004,2923
+Central African Republic,2005,2153
+Central African Republic,2006,6417
+Central African Republic,2007,
+Central African Republic,2008,4232
+Central African Republic,2009,5132
+Central African Republic,2010,6302
+Central African Republic,2011,5307
+Central African Republic,2012,4641
+Central African Republic,2013,4196
+Chad,1995,
+Chad,1996,
+Chad,1997,
+Chad,1998,
+Chad,1999,2920
+Chad,2000,
+Chad,2001,
+Chad,2002,3517
+Chad,2003,3599
+Chad,2004,2270
+Chad,2005,2516
+Chad,2006,
+Chad,2007,
+Chad,2008,
+Chad,2009,3818
+Chad,2010,7701
+Chad,2011,8266
+Chad,2012,8289
+Chad,2013,11237
+Chile,1995,1624
+Chile,1996,1480
+Chile,1997,1523
+Chile,1998,
+Chile,1999,1497
+Chile,2000,1290
+Chile,2001,1355
+Chile,2002,1412
+Chile,2003,1276
+Chile,2004,1297
+Chile,2005,1176
+Chile,2006,2271
+Chile,2007,2266
+Chile,2008,2275
+Chile,2009,2210
+Chile,2010,2209
+Chile,2011,2263
+Chile,2012,2215
+Chile,2013,2404
+China,1995,131194
+China,1996,168270
+China,1997,195895
+China,1998,214404
+China,1999,212258
+China,2000,213766
+China,2001,212766
+China,2002,194972
+China,2003,267280
+China,2004,384886
+China,2005,472719
+China,2006,468291
+China,2007,465877
+China,2008,462596
+China,2009,884477
+China,2010,869092
+China,2011,865059
+China,2012,858861
+China,2013,847176
+"China, Hong Kong SAR",1995,
+"China, Hong Kong SAR",1996,
+"China, Hong Kong SAR",1997,2036
+"China, Hong Kong SAR",1998,
+"China, Hong Kong SAR",1999,1767
+"China, Hong Kong SAR",2000,1940
+"China, Hong Kong SAR",2001,1857
+"China, Hong Kong SAR",2002,1892
+"China, Hong Kong SAR",2003,1794
+"China, Hong Kong SAR",2004,1694
+"China, Hong Kong SAR",2005,5441
+"China, Hong Kong SAR",2006,5142
+"China, Hong Kong SAR",2007,4973
+"China, Hong Kong SAR",2008,5168
+"China, Hong Kong SAR",2009,4839
+"China, Hong Kong SAR",2010,4619
+"China, Hong Kong SAR",2011,4439
+"China, Hong Kong SAR",2012,4486
+"China, Hong Kong SAR",2013,4744
+Colombia,1995,
+Colombia,1996,
+Colombia,1997,
+Colombia,1998,
+Colombia,1999,8329
+Colombia,2000,8358
+Colombia,2001,8022
+Colombia,2002,6519
+Colombia,2003,7972
+Colombia,2004,7640
+Colombia,2005,6870
+Colombia,2006,10696
+Colombia,2007,10527
+Colombia,2008,10931
+Colombia,2009,10985
+Colombia,2010,10709
+Colombia,2011,11142
+Colombia,2012,11066
+Colombia,2013,11737
+Congo,1995,1986
+Congo,1996,
+Congo,1997,
+Congo,1998,
+Congo,1999,2032
+Congo,2000,
+Congo,2001,4164
+Congo,2002,
+Congo,2003,
+Congo,2004,4119
+Congo,2005,
+Congo,2006,3191
+Congo,2007,3552
+Congo,2008,3371
+Congo,2009,3433
+Congo,2010,3449
+Congo,2011,3716
+Congo,2012,3984
+Congo,2013,3903
+Côte d'Ivoire,1995,8254
+Côte d'Ivoire,1996,7387
+Côte d'Ivoire,1997,9041
+Côte d'Ivoire,1998,9391
+Côte d'Ivoire,1999,8952
+Côte d'Ivoire,2000,
+Côte d'Ivoire,2001,9901
+Côte d'Ivoire,2002,11025
+Côte d'Ivoire,2003,11198
+Côte d'Ivoire,2004,12136
+Côte d'Ivoire,2005,12403
+Côte d'Ivoire,2006,12867
+Côte d'Ivoire,2007,14071
+Côte d'Ivoire,2008,15294
+Côte d'Ivoire,2009,14300
+Côte d'Ivoire,2010,14131
+Côte d'Ivoire,2011,14416
+Côte d'Ivoire,2012,14660
+Côte d'Ivoire,2013,15241
+Democratic People's Republic of Korea,1995,
+Democratic People's Republic of Korea,1996,
+Democratic People's Republic of Korea,1997,3980
+Democratic People's Republic of Korea,1998,302
+Democratic People's Republic of Korea,1999,2673
+Democratic People's Republic of Korea,2000,16440
+Democratic People's Republic of Korea,2001,14428
+Democratic People's Republic of Korea,2002,18576
+Democratic People's Republic of Korea,2003,17392
+Democratic People's Republic of Korea,2004,18479
+Democratic People's Republic of Korea,2005,17816
+Democratic People's Republic of Korea,2006,18435
+Democratic People's Republic of Korea,2007,23575
+Democratic People's Republic of Korea,2008,70384
+Democratic People's Republic of Korea,2009,74089
+Democratic People's Republic of Korea,2010,81240
+Democratic People's Republic of Korea,2011,85564
+Democratic People's Republic of Korea,2012,85184
+Democratic People's Republic of Korea,2013,90591
+Democratic Republic of the Congo,1995,14069
+Democratic Republic of the Congo,1996,11587
+Democratic Republic of the Congo,1997,13242
+Democratic Republic of the Congo,1998,30573
+Democratic Republic of the Congo,1999,34921
+Democratic Republic of the Congo,2000,35488
+Democratic Republic of the Congo,2001,40450
+Democratic Republic of the Congo,2002,43480
+Democratic Republic of the Congo,2003,53333
+Democratic Republic of the Congo,2004,62192
+Democratic Republic of the Congo,2005,65040
+Democratic Republic of the Congo,2006,63144
+Democratic Republic of the Congo,2007,66099
+Democratic Republic of the Congo,2008,69477
+Democratic Republic of the Congo,2009,70489
+Democratic Republic of the Congo,2010,73653
+Democratic Republic of the Congo,2011,71321
+Democratic Republic of the Congo,2012,71124
+Democratic Republic of the Congo,2013,71220
+Djibouti,1995,
+Djibouti,1996,1796
+Djibouti,1997,1905
+Djibouti,1998,1697
+Djibouti,1999,1570
+Djibouti,2000,1394
+Djibouti,2001,1312
+Djibouti,2002,1253
+Djibouti,2003,1192
+Djibouti,2004,1086
+Djibouti,2005,1120
+Djibouti,2006,1153
+Djibouti,2007,2826
+Djibouti,2008,1375
+Djibouti,2009,1377
+Djibouti,2010,1181
+Djibouti,2011,1336
+Djibouti,2012,1170
+Djibouti,2013,1150
+Dominican Republic,1995,
+Dominican Republic,1996,1300
+Dominican Republic,1997,2682
+Dominican Republic,1998,2194
+Dominican Republic,1999,3489
+Dominican Republic,2000,2907
+Dominican Republic,2001,
+Dominican Republic,2002,2179
+Dominican Republic,2003,2806
+Dominican Republic,2004,2720
+Dominican Republic,2005,2949
+Dominican Republic,2006,2658
+Dominican Republic,2007,2373
+Dominican Republic,2008,2458
+Dominican Republic,2009,2441
+Dominican Republic,2010,2159
+Dominican Republic,2011,2454
+Dominican Republic,2012,2483
+Dominican Republic,2013,2675
+Ecuador,1995,
+Ecuador,1996,
+Ecuador,1997,
+Ecuador,1998,
+Ecuador,1999,
+Ecuador,2000,
+Ecuador,2001,4439
+Ecuador,2002,
+Ecuador,2003,1699
+Ecuador,2004,4340
+Ecuador,2005,3048
+Ecuador,2006,3182
+Ecuador,2007,3448
+Ecuador,2008,3380
+Ecuador,2009,3330
+Ecuador,2010,3373
+Ecuador,2011,4709
+Ecuador,2012,4997
+Ecuador,2013,5277
+Egypt,1995,4475
+Egypt,1996,4635
+Egypt,1997,5074
+Egypt,1998,5077
+Egypt,1999,4713
+Egypt,2000,4580
+Egypt,2001,4514
+Egypt,2002,4777
+Egypt,2003,5001
+Egypt,2004,4619
+Egypt,2005,3730
+Egypt,2006,9559
+Egypt,2007,9458
+Egypt,2008,8939
+Egypt,2009,9289
+Egypt,2010,8886
+Egypt,2011,8523
+Egypt,2012,8145
+Egypt,2013,7534
+Ethiopia,1995,6080
+Ethiopia,1996,9225
+Ethiopia,1997,15753
+Ethiopia,1998,17864
+Ethiopia,1999,21555
+Ethiopia,2000,30510
+Ethiopia,2001,33028
+Ethiopia,2002,36541
+Ethiopia,2003,39698
+Ethiopia,2004,41430
+Ethiopia,2005,38525
+Ethiopia,2006,36674
+Ethiopia,2007,38040
+Ethiopia,2008,40794
+Ethiopia,2009,44396
+Ethiopia,2010,46634
+Ethiopia,2011,49694
+Ethiopia,2012,
+Ethiopia,2013,
+France,1995,3449
+France,1996,2991
+France,1997,2421
+France,1998,
+France,1999,2312
+France,2000,1807
+France,2001,1827
+France,2002,1754
+France,2003,1719
+France,2004,1681
+France,2005,1718
+France,2006,4789
+France,2007,6326
+France,2008,3281
+France,2009,2847
+France,2010,2730
+France,2011,2652
+France,2012,2600
+France,2013,4680
+Georgia,1995,221
+Georgia,1996,475
+Georgia,1997,595
+Georgia,1998,547
+Georgia,1999,746
+Georgia,2000,592
+Georgia,2001,1014
+Georgia,2002,984
+Georgia,2003,987
+Georgia,2004,1311
+Georgia,2005,1495
+Georgia,2006,4318
+Georgia,2007,4028
+Georgia,2008,4148
+Georgia,2009,4457
+Georgia,2010,4383
+Georgia,2011,4223
+Georgia,2012,3778
+Georgia,2013,3434
+Germany,1995,3852
+Germany,1996,3680
+Germany,1997,3346
+Germany,1998,3124
+Germany,1999,2918
+Germany,2000,
+Germany,2001,841
+Germany,2002,722
+Germany,2003,1195
+Germany,2004,1327
+Germany,2005,1190
+Germany,2006,4862
+Germany,2007,5655
+Germany,2008,3538
+Germany,2009,3571
+Germany,2010,3452
+Germany,2011,3457
+Germany,2012,3378
+Germany,2013,4175
+Ghana,1995,2638
+Ghana,1996,2422
+Ghana,1997,5596
+Ghana,1998,7005
+Ghana,1999,6825
+Ghana,2000,7316
+Ghana,2001,7712
+Ghana,2002,7732
+Ghana,2003,7714
+Ghana,2004,7259
+Ghana,2005,7505
+Ghana,2006,7786
+Ghana,2007,7429
+Ghana,2008,
+Ghana,2009,8255
+Ghana,2010,12724
+Ghana,2011,14962
+Ghana,2012,14377
+Ghana,2013,15043
+Guatemala,1995,2368
+Guatemala,1996,2308
+Guatemala,1997,2218
+Guatemala,1998,2255
+Guatemala,1999,2264
+Guatemala,2000,2052
+Guatemala,2001,1669
+Guatemala,2002,1865
+Guatemala,2003,1795
+Guatemala,2004,2339
+Guatemala,2005,2420
+Guatemala,2006,
+Guatemala,2007,3006
+Guatemala,2008,2742
+Guatemala,2009,3010
+Guatemala,2010,2121
+Guatemala,2011,1961
+Guatemala,2012,
+Guatemala,2013,2196
+Guinea,1995,2263
+Guinea,1996,2844
+Guinea,1997,2981
+Guinea,1998,3362
+Guinea,1999,3562
+Guinea,2000,3920
+Guinea,2001,4092
+Guinea,2002,4028
+Guinea,2003,4495
+Guinea,2004,5015
+Guinea,2005,5479
+Guinea,2006,5903
+Guinea,2007,6224
+Guinea,2008,6561
+Guinea,2009,5377
+Guinea,2010,7041
+Guinea,2011,10664
+Guinea,2012,5015
+Guinea,2013,11313
+Haiti,1995,
+Haiti,1996,3351
+Haiti,1997,5449
+Haiti,1998,6442
+Haiti,1999,6828
+Haiti,2000,5887
+Haiti,2001,5607
+Haiti,2002,6188
+Haiti,2003,7015
+Haiti,2004,7044
+Haiti,2005,7340
+Haiti,2006,13693
+Haiti,2007,13824
+Haiti,2008,14289
+Haiti,2009,
+Haiti,2010,13884
+Haiti,2011,14871
+Haiti,2012,15898
+Haiti,2013,17040
+Honduras,1995,2438
+Honduras,1996,1944
+Honduras,1997,1579
+Honduras,1998,2311
+Honduras,1999,2406
+Honduras,2000,2345
+Honduras,2001,2839
+Honduras,2002,2956
+Honduras,2003,1956
+Honduras,2004,2012
+Honduras,2005,2069
+Honduras,2006,3024
+Honduras,2007,2772
+Honduras,2008,2678
+Honduras,2009,2732
+Honduras,2010,2706
+Honduras,2011,3078
+Honduras,2012,2816
+Honduras,2013,2981
+India,1995,1985
+India,1996,6254
+India,1997,7708
+India,1998,12421
+India,1999,52900
+India,2000,193149
+India,2001,185277
+India,2002,351493
+India,2003,404884
+India,2004,479665
+India,2005,508557
+India,2006,553797
+India,2007,1198289
+India,2008,615492
+India,2009,624617
+India,2010,630164
+India,2011,642311
+India,2012,629589
+India,2013,
+Indonesia,1995,2468
+Indonesia,1996,11381
+Indonesia,1997,17364
+Indonesia,1998,32280
+Indonesia,1999,49172
+Indonesia,2000,
+Indonesia,2001,53965
+Indonesia,2002,76230
+Indonesia,2003,92566
+Indonesia,2004,128981
+Indonesia,2005,158640
+Indonesia,2006,175320
+Indonesia,2007,271278
+Indonesia,2008,292899
+Indonesia,2009,289044
+Indonesia,2010,296272
+Indonesia,2011,313601
+Indonesia,2012,322882
+Indonesia,2013,325582
+Iran (Islamic Republic of),1995,9324
+Iran (Islamic Republic of),1996,5414
+Iran (Islamic Republic of),1997,5271
+Iran (Islamic Republic of),1998,5141
+Iran (Islamic Republic of),1999,4977
+Iran (Islamic Republic of),2000,5378
+Iran (Islamic Republic of),2001,5529
+Iran (Islamic Republic of),2002,5366
+Iran (Islamic Republic of),2003,5188
+Iran (Islamic Republic of),2004,4897
+Iran (Islamic Republic of),2005,4581
+Iran (Islamic Republic of),2006,9054
+Iran (Islamic Republic of),2007,9046
+Iran (Islamic Republic of),2008,9156
+Iran (Islamic Republic of),2009,9763
+Iran (Islamic Republic of),2010,10042
+Iran (Islamic Republic of),2011,10595
+Iran (Islamic Republic of),2012,10705
+Iran (Islamic Republic of),2013,11052
+Iraq,1995,11553
+Iraq,1996,
+Iraq,1997,8001
+Iraq,1998,8850
+Iraq,1999,10811
+Iraq,2000,2779
+Iraq,2001,3559
+Iraq,2002,3895
+Iraq,2003,3557
+Iraq,2004,3381
+Iraq,2005,3096
+Iraq,2006,7440
+Iraq,2007,7309
+Iraq,2008,8595
+Iraq,2009,8917
+Iraq,2010,9320
+Iraq,2011,8479
+Iraq,2012,8336
+Iraq,2013,8554
+Italy,1995,1402
+Italy,1996,1539
+Italy,1997,1930
+Italy,1998,2353
+Italy,1999,1233
+Italy,2000,676
+Italy,2001,743
+Italy,2002,936
+Italy,2003,1167
+Italy,2004,833
+Italy,2005,1104
+Italy,2006,4058
+Italy,2007,2965
+Italy,2008,3395
+Italy,2009,2520
+Italy,2010,2722
+Italy,2011,2007
+Italy,2012,1611
+Italy,2013,2434
+Japan,1995,14367
+Japan,1996,12867
+Japan,1997,13571
+Japan,1998,11935
+Japan,1999,12909
+Japan,2000,11853
+Japan,2001,11408
+Japan,2002,10807
+Japan,2003,10843
+Japan,2004,10471
+Japan,2005,10931
+Japan,2006,24460
+Japan,2007,23626
+Japan,2008,22924
+Japan,2009,22419
+Japan,2010,21499
+Japan,2011,20994
+Japan,2012,19947
+Japan,2013,20495
+Kazakhstan,1995,
+Kazakhstan,1996,
+Kazakhstan,1997,4432
+Kazakhstan,1998,6180
+Kazakhstan,1999,6887
+Kazakhstan,2000,8903
+Kazakhstan,2001,9079
+Kazakhstan,2002,9452
+Kazakhstan,2003,
+Kazakhstan,2004,7927
+Kazakhstan,2005,6911
+Kazakhstan,2006,25988
+Kazakhstan,2007,21073
+Kazakhstan,2008,19684
+Kazakhstan,2009,16810
+Kazakhstan,2010,15487
+Kazakhstan,2011,14396
+Kazakhstan,2012,13404
+Kazakhstan,2013,18958
+Kenya,1995,13934
+Kenya,1996,16978
+Kenya,1997,18856
+Kenya,1998,24029
+Kenya,1999,27197
+Kenya,2000,28773
+Kenya,2001,31307
+Kenya,2002,34318
+Kenya,2003,38158
+Kenya,2004,41149
+Kenya,2005,40389
+Kenya,2006,39154
+Kenya,2007,38360
+Kenya,2008,78697
+Kenya,2009,87427
+Kenya,2010,85484
+Kenya,2011,84548
+Kenya,2012,81449
+Kenya,2013,74335
+Kyrgyzstan,1995,832
+Kyrgyzstan,1996,1003
+Kyrgyzstan,1997,1618
+Kyrgyzstan,1998,830
+Kyrgyzstan,1999,1642
+Kyrgyzstan,2000,1257
+Kyrgyzstan,2001,1481
+Kyrgyzstan,2002,1544
+Kyrgyzstan,2003,1652
+Kyrgyzstan,2004,1761
+Kyrgyzstan,2005,1972
+Kyrgyzstan,2006,1843
+Kyrgyzstan,2007,1746
+Kyrgyzstan,2008,5333
+Kyrgyzstan,2009,5434
+Kyrgyzstan,2010,5308
+Kyrgyzstan,2011,1537
+Kyrgyzstan,2012,5851
+Kyrgyzstan,2013,5859
+Lao People's Democratic Republic,1995,726
+Lao People's Democratic Republic,1996,886
+Lao People's Democratic Republic,1997,1234
+Lao People's Democratic Republic,1998,1494
+Lao People's Democratic Republic,1999,1706
+Lao People's Democratic Republic,2000,1526
+Lao People's Democratic Republic,2001,1563
+Lao People's Democratic Republic,2002,1829
+Lao People's Democratic Republic,2003,1866
+Lao People's Democratic Republic,2004,2226
+Lao People's Democratic Republic,2005,2806
+Lao People's Democratic Republic,2006,3041
+Lao People's Democratic Republic,2007,3084
+Lao People's Democratic Republic,2008,3079
+Lao People's Democratic Republic,2009,3034
+Lao People's Democratic Republic,2010,3819
+Lao People's Democratic Republic,2011,4136
+Lao People's Democratic Republic,2012,3885
+Lao People's Democratic Republic,2013,3937
+Lesotho,1995,1361
+Lesotho,1996,1788
+Lesotho,1997,2398
+Lesotho,1998,2476
+Lesotho,1999,
+Lesotho,2000,2729
+Lesotho,2001,
+Lesotho,2002,3103
+Lesotho,2003,3754
+Lesotho,2004,4272
+Lesotho,2005,4280
+Lesotho,2006,4024
+Lesotho,2007,788
+Lesotho,2008,3862
+Lesotho,2009,11545
+Lesotho,2010,11153
+Lesotho,2011,10945
+Lesotho,2012,10317
+Lesotho,2013,8916
+Liberia,1995,
+Liberia,1996,668
+Liberia,1997,
+Liberia,1998,1190
+Liberia,1999,
+Liberia,2000,1021
+Liberia,2001,934
+Liberia,2002,1964
+Liberia,2003,1319
+Liberia,2004,2490
+Liberia,2005,2167
+Liberia,2006,4298
+Liberia,2007,
+Liberia,2008,3042
+Liberia,2009,4312
+Liberia,2010,6498
+Liberia,2011,7705
+Liberia,2012,8037
+Liberia,2013,3835
+Madagascar,1995,8026
+Madagascar,1996,8352
+Madagascar,1997,
+Madagascar,1998,9235
+Madagascar,1999,
+Madagascar,2000,
+Madagascar,2001,11092
+Madagascar,2002,10940
+Madagascar,2003,13073
+Madagascar,2004,9918
+Madagascar,2005,11771
+Madagascar,2006,15613
+Madagascar,2007,20638
+Madagascar,2008,16795
+Madagascar,2009,21335
+Madagascar,2010,22304
+Madagascar,2011,17856
+Madagascar,2012,17129
+Madagascar,2013,
+Malawi,1995,6284
+Malawi,1996,7175
+Malawi,1997,7587
+Malawi,1998,8853
+Malawi,1999,8130
+Malawi,2000,8265
+Malawi,2001,8309
+Malawi,2002,
+Malawi,2003,7716
+Malawi,2004,8566
+Malawi,2005,8443
+Malawi,2006,8166
+Malawi,2007,7608
+Malawi,2008,7681
+Malawi,2009,7623
+Malawi,2010,7240
+Malawi,2011,7003
+Malawi,2012,6951
+Malawi,2013,16795
+Malaysia,1995,6688
+Malaysia,1996,7269
+Malaysia,1997,7337
+Malaysia,1998,7802
+Malaysia,1999,8207
+Malaysia,2000,8156
+Malaysia,2001,8309
+Malaysia,2002,7958
+Malaysia,2003,15292
+Malaysia,2004,15394
+Malaysia,2005,16066
+Malaysia,2006,7524
+Malaysia,2007,15596
+Malaysia,2008,17504
+Malaysia,2009,
+Malaysia,2010,18018
+Malaysia,2011,19251
+Malaysia,2012,21249
+Malaysia,2013,23335
+Mali,1995,1866
+Mali,1996,2173
+Mali,1997,2899
+Mali,1998,2560
+Mali,1999,2690
+Mali,2000,2527
+Mali,2001,
+Mali,2002,2757
+Mali,2003,3015
+Mali,2004,3069
+Mali,2005,3523
+Mali,2006,4768
+Mali,2007,4953
+Mali,2008,4833
+Mali,2009,5163
+Mali,2010,3686
+Mali,2011,3777
+Mali,2012,3726
+Mali,2013,3818
+Mexico,1995,
+Mexico,1996,8495
+Mexico,1997,
+Mexico,1998,11473
+Mexico,1999,10747
+Mexico,2000,11676
+Mexico,2001,15103
+Mexico,2002,11555
+Mexico,2003,12933
+Mexico,2004,11214
+Mexico,2005,11997
+Mexico,2006,17093
+Mexico,2007,17613
+Mexico,2008,16140
+Mexico,2009,16013
+Mexico,2010,18848
+Mexico,2011,18986
+Mexico,2012,19558
+Mexico,2013,20708
+Mongolia,1995,622
+Mongolia,1996,769
+Mongolia,1997,1171
+Mongolia,1998,1356
+Mongolia,1999,1513
+Mongolia,2000,1389
+Mongolia,2001,1632
+Mongolia,2002,1670
+Mongolia,2003,1541
+Mongolia,2004,1808
+Mongolia,2005,1868
+Mongolia,2006,2129
+Mongolia,2007,1856
+Mongolia,2008,1838
+Mongolia,2009,1809
+Mongolia,2010,4213
+Mongolia,2011,3985
+Mongolia,2012,3944
+Mongolia,2013,4331
+Morocco,1995,14171
+Morocco,1996,14278
+Morocco,1997,14134
+Morocco,1998,13426
+Morocco,1999,13420
+Morocco,2000,12872
+Morocco,2001,12804
+Morocco,2002,12914
+Morocco,2003,12842
+Morocco,2004,12280
+Morocco,2005,12757
+Morocco,2006,26099
+Morocco,2007,25562
+Morocco,2008,25473
+Morocco,2009,26059
+Morocco,2010,27143
+Morocco,2011,27425
+Morocco,2012,27437
+Morocco,2013,27566
+Mozambique,1995,10566
+Mozambique,1996,10478
+Mozambique,1997,11125
+Mozambique,1998,
+Mozambique,1999,
+Mozambique,2000,
+Mozambique,2001,
+Mozambique,2002,
+Mozambique,2003,
+Mozambique,2004,
+Mozambique,2005,
+Mozambique,2006,
+Mozambique,2007,
+Mozambique,2008,
+Mozambique,2009,
+Mozambique,2010,
+Mozambique,2011,
+Mozambique,2012,
+Mozambique,2013,
+Myanmar,1995,8529
+Myanmar,1996,9716
+Myanmar,1997,9014
+Myanmar,1998,10089
+Myanmar,1999,11458
+Myanmar,2000,17254
+Myanmar,2001,20686
+Myanmar,2002,24162
+Myanmar,2003,27448
+Myanmar,2004,31408
+Myanmar,2005,36541
+Myanmar,2006,40241
+Myanmar,2007,42588
+Myanmar,2008,41248
+Myanmar,2009,41401
+Myanmar,2010,42318
+Myanmar,2011,42314
+Myanmar,2012,42909
+Myanmar,2013,
+Namibia,1995,697
+Namibia,1996,2825
+Namibia,1997,3225
+Namibia,1998,3598
+Namibia,1999,3760
+Namibia,2000,4013
+Namibia,2001,4535
+Namibia,2002,4689
+Namibia,2003,5487
+Namibia,2004,5155
+Namibia,2005,5222
+Namibia,2006,5356
+Namibia,2007,5091
+Namibia,2008,4928
+Namibia,2009,4608
+Namibia,2010,4464
+Namibia,2011,4503
+Namibia,2012,9890
+Namibia,2013,9432
+Nepal,1995,
+Nepal,1996,9092
+Nepal,1997,
+Nepal,1998,10972
+Nepal,1999,13410
+Nepal,2000,13683
+Nepal,2001,13664
+Nepal,2002,13714
+Nepal,2003,14348
+Nepal,2004,14614
+Nepal,2005,14617
+Nepal,2006,14028
+Nepal,2007,14355
+Nepal,2008,11053
+Nepal,2009,15442
+Nepal,2010,15569
+Nepal,2011,15000
+Nepal,2012,15057
+Nepal,2013,15099
+Nicaragua,1995,1568
+Nicaragua,1996,1722
+Nicaragua,1997,1670
+Nicaragua,1998,1648
+Nicaragua,1999,1564
+Nicaragua,2000,1471
+Nicaragua,2001,1510
+Nicaragua,2002,1320
+Nicaragua,2003,1404
+Nicaragua,2004,1327
+Nicaragua,2005,1246
+Nicaragua,2006,1285
+Nicaragua,2007,1690
+Nicaragua,2008,1577
+Nicaragua,2009,2554
+Nicaragua,2010,1440
+Nicaragua,2011,1552
+Nicaragua,2012,0
+Nicaragua,2013,1540
+Niger,1995,
+Niger,1996,
+Niger,1997,1273
+Niger,1998,2125
+Niger,1999,
+Niger,2000,2146
+Niger,2001,
+Niger,2002,
+Niger,2003,4504
+Niger,2004,
+Niger,2005,5050
+Niger,2006,5279
+Niger,2007,5773
+Niger,2008,5853
+Niger,2009,6347
+Niger,2010,6283
+Niger,2011,6607
+Niger,2012,6848
+Niger,2013,7182
+Nigeria,1995,9476
+Nigeria,1996,15664
+Nigeria,1997,11235
+Nigeria,1998,13161
+Nigeria,1999,
+Nigeria,2000,17418
+Nigeria,2001,18097
+Nigeria,2002,19596
+Nigeria,2003,28173
+Nigeria,2004,33755
+Nigeria,2005,35048
+Nigeria,2006,39903
+Nigeria,2007,44016
+Nigeria,2008,46026
+Nigeria,2009,44863
+Nigeria,2010,45416
+Nigeria,2011,47437
+Nigeria,2012,52901
+Nigeria,2013,100401
+Pakistan,1995,2578
+Pakistan,1996,
+Pakistan,1997,
+Pakistan,1998,4145
+Pakistan,1999,2272
+Pakistan,2000,3444
+Pakistan,2001,7988
+Pakistan,2002,15488
+Pakistan,2003,21293
+Pakistan,2004,31447
+Pakistan,2005,48312
+Pakistan,2006,65308
+Pakistan,2007,88747
+Pakistan,2008,100037
+Pakistan,2009,101674
+Pakistan,2010,124455
+Pakistan,2011,127571
+Pakistan,2012,132757
+Pakistan,2013,
+Paraguay,1995,736
+Paraguay,1996,877
+Paraguay,1997,878
+Paraguay,1998,848
+Paraguay,1999,1035
+Paraguay,2000,898
+Paraguay,2001,912
+Paraguay,2002,1002
+Paraguay,2003,1166
+Paraguay,2004,1200
+Paraguay,2005,1254
+Paraguay,2006,2359
+Paraguay,2007,2170
+Paraguay,2008,2133
+Paraguay,2009,2189
+Paraguay,2010,2056
+Paraguay,2011,2116
+Paraguay,2012,2094
+Paraguay,2013,2243
+Peru,1995,6259
+Peru,1996,5692
+Peru,1997,27498
+Peru,1998,27707
+Peru,1999,24511
+Peru,2000,22580
+Peru,2001,21685
+Peru,2002,4286
+Peru,2003,3946
+Peru,2004,18289
+Peru,2005,18490
+Peru,2006,19251
+Peru,2007,17796
+Peru,2008,17407
+Peru,2009,
+Peru,2010,
+Peru,2011,
+Peru,2012,
+Peru,2013,27504
+Philippines,1995,410
+Philippines,1996,318
+Philippines,1997,1952
+Philippines,1998,1889
+Philippines,1999,
+Philippines,2000,
+Philippines,2001,
+Philippines,2002,
+Philippines,2003,69988
+Philippines,2004,76505
+Philippines,2005,81647
+Philippines,2006,85740
+Philippines,2007,86566
+Philippines,2008,85025
+Philippines,2009,88806
+Philippines,2010,89198
+Philippines,2011,93580
+Philippines,2012,93983
+Philippines,2013,97221
+Poland,1995,3679
+Poland,1996,6819
+Poland,1997,3486
+Poland,1998,3502
+Poland,1999,3177
+Poland,2000,3934
+Poland,2001,3155
+Poland,2002,3060
+Poland,2003,2981
+Poland,2004,2773
+Poland,2005,2823
+Poland,2006,7627
+Poland,2007,7569
+Poland,2008,7061
+Poland,2009,7268
+Poland,2010,6610
+Poland,2011,7515
+Poland,2012,6665
+Poland,2013,7043
+Portugal,1995,2019
+Portugal,1996,1938
+Portugal,1997,1628
+Portugal,1998,2016
+Portugal,1999,1801
+Portugal,2000,1857
+Portugal,2001,1812
+Portugal,2002,1960
+Portugal,2003,1713
+Portugal,2004,1491
+Portugal,2005,1296
+Portugal,2006,3063
+Portugal,2007,2816
+Portugal,2008,2637
+Portugal,2009,2601
+Portugal,2010,2491
+Portugal,2011,2391
+Portugal,2012,2392
+Portugal,2013,2335
+Republic of Korea,1995,11754
+Republic of Korea,1996,11420
+Republic of Korea,1997,9957
+Republic of Korea,1998,10359
+Republic of Korea,1999,9559
+Republic of Korea,2000,8216
+Republic of Korea,2001,11805
+Republic of Korea,2002,11345
+Republic of Korea,2003,10976
+Republic of Korea,2004,11471
+Republic of Korea,2005,11638
+Republic of Korea,2006,35361
+Republic of Korea,2007,34710
+Republic of Korea,2008,34153
+Republic of Korea,2009,35842
+Republic of Korea,2010,39051
+Republic of Korea,2011,39557
+Republic of Korea,2012,39513
+Republic of Korea,2013,41573
+Republic of Moldova,1995,665
+Republic of Moldova,1996,219
+Republic of Moldova,1997,397
+Republic of Moldova,1998,477
+Republic of Moldova,1999,609
+Republic of Moldova,2000,290
+Republic of Moldova,2001,1060
+Republic of Moldova,2002,1146
+Republic of Moldova,2003,1214
+Republic of Moldova,2004,1536
+Republic of Moldova,2005,1696
+Republic of Moldova,2006,1679
+Republic of Moldova,2007,4166
+Republic of Moldova,2008,3951
+Republic of Moldova,2009,3804
+Republic of Moldova,2010,3745
+Republic of Moldova,2011,3836
+Republic of Moldova,2012,3804
+Republic of Moldova,2013,4485
+Romania,1995,18211
+Romania,1996,11531
+Romania,1997,11665
+Romania,1998,10821
+Romania,1999,10304
+Romania,2000,10191
+Romania,2001,11176
+Romania,2002,10693
+Romania,2003,10407
+Romania,2004,10878
+Romania,2005,10795
+Romania,2006,20732
+Romania,2007,19253
+Romania,2008,18774
+Romania,2009,17773
+Romania,2010,15940
+Romania,2011,14538
+Romania,2012,13888
+Romania,2013,15523
+Russian Federation,1995,
+Russian Federation,1996,283
+Russian Federation,1997,660
+Russian Federation,1998,683
+Russian Federation,1999,21744
+Russian Federation,2000,2329
+Russian Federation,2001,26606
+Russian Federation,2002,27818
+Russian Federation,2003,28802
+Russian Federation,2004,30890
+Russian Federation,2005,
+Russian Federation,2006,32335
+Russian Federation,2007,120912
+Russian Federation,2008,120835
+Russian Federation,2009,117227
+Russian Federation,2010,102823
+Russian Federation,2011,104320
+Russian Federation,2012,97542
+Russian Federation,2013,90427
+Rwanda,1995,
+Rwanda,1996,2014
+Rwanda,1997,2852
+Rwanda,1998,
+Rwanda,1999,2378
+Rwanda,2000,4455
+Rwanda,2001,
+Rwanda,2002,919
+Rwanda,2003,2724
+Rwanda,2004,4041
+Rwanda,2005,3971
+Rwanda,2006,4220
+Rwanda,2007,4053
+Rwanda,2008,4173
+Rwanda,2009,4184
+Rwanda,2010,3785
+Rwanda,2011,3811
+Rwanda,2012,3571
+Rwanda,2013,5702
+Saudi Arabia,1995,
+Saudi Arabia,1996,
+Saudi Arabia,1997,
+Saudi Arabia,1998,797
+Saudi Arabia,1999,1860
+Saudi Arabia,2000,1595
+Saudi Arabia,2001,1402
+Saudi Arabia,2002,1674
+Saudi Arabia,2003,1646
+Saudi Arabia,2004,1692
+Saudi Arabia,2005,1722
+Saudi Arabia,2006,3673
+Saudi Arabia,2007,3863
+Saudi Arabia,2008,3919
+Saudi Arabia,2009,3949
+Saudi Arabia,2010,4294
+Saudi Arabia,2011,3868
+Saudi Arabia,2012,3599
+Saudi Arabia,2013,3435
+Senegal,1995,5421
+Senegal,1996,5949
+Senegal,1997,5430
+Senegal,1998,5454
+Senegal,1999,5011
+Senegal,2000,5823
+Senegal,2001,6094
+Senegal,2002,5796
+Senegal,2003,6587
+Senegal,2004,6437
+Senegal,2005,6722
+Senegal,2006,6882
+Senegal,2007,7108
+Senegal,2008,7584
+Senegal,2009,7883
+Senegal,2010,7686
+Senegal,2011,7633
+Senegal,2012,8448
+Senegal,2013,
+Sierra Leone,1995,1454
+Sierra Leone,1996,2234
+Sierra Leone,1997,2296
+Sierra Leone,1998,2262
+Sierra Leone,1999,
+Sierra Leone,2000,2472
+Sierra Leone,2001,2692
+Sierra Leone,2002,2938
+Sierra Leone,2003,3113
+Sierra Leone,2004,3735
+Sierra Leone,2005,4370
+Sierra Leone,2006,4629
+Sierra Leone,2007,9250
+Sierra Leone,2008,
+Sierra Leone,2009,6092
+Sierra Leone,2010,6898
+Sierra Leone,2011,7435
+Sierra Leone,2012,9691
+Sierra Leone,2013,7390
+Somalia,1995,2338
+Somalia,1996,2318
+Somalia,1997,3097
+Somalia,1998,3121
+Somalia,1999,3487
+Somalia,2000,3776
+Somalia,2001,4640
+Somalia,2002,4729
+Somalia,2003,5190
+Somalia,2004,6479
+Somalia,2005,7068
+Somalia,2006,11374
+Somalia,2007,6130
+Somalia,2008,6520
+Somalia,2009,6047
+Somalia,2010,5225
+Somalia,2011,7906
+Somalia,2012,8241
+Somalia,2013,6538
+South Africa,1995,
+South Africa,1996,
+South Africa,1997,
+South Africa,1998,
+South Africa,1999,9621
+South Africa,2000,11490
+South Africa,2001,20544
+South Africa,2002,77467
+South Africa,2003,113008
+South Africa,2004,126268
+South Africa,2005,125460
+South Africa,2006,272162
+South Africa,2007,286973
+South Africa,2008,320026
+South Africa,2009,383774
+South Africa,2010,364992
+South Africa,2011,289111
+South Africa,2012,296996
+South Africa,2013,312380
+Spain,1995,1700
+Spain,1996,
+Spain,1997,
+Spain,1998,1916
+Spain,1999,
+Spain,2000,
+Spain,2001,2109
+Spain,2002,2646
+Spain,2003,2014
+Spain,2004,2011
+Spain,2005,2290
+Spain,2006,7555
+Spain,2007,7159
+Spain,2008,6753
+Spain,2009,0
+Spain,2010,6524
+Spain,2011,6116
+Spain,2012,5330
+Spain,2013,5224
+Sri Lanka,1995,3029
+Sri Lanka,1996,2958
+Sri Lanka,1997,3506
+Sri Lanka,1998,3747
+Sri Lanka,1999,3749
+Sri Lanka,2000,4316
+Sri Lanka,2001,4308
+Sri Lanka,2002,4297
+Sri Lanka,2003,4321
+Sri Lanka,2004,4302
+Sri Lanka,2005,4841
+Sri Lanka,2006,8259
+Sri Lanka,2007,8418
+Sri Lanka,2008,8938
+Sri Lanka,2009,9092
+Sri Lanka,2010,9328
+Sri Lanka,2011,9507
+Sri Lanka,2012,8507
+Sri Lanka,2013,9010
+Sudan,1995,6280
+Sudan,1996,
+Sudan,1997,
+Sudan,1998,10791
+Sudan,1999,13505
+Sudan,2000,12311
+Sudan,2001,9482
+Sudan,2002,10338
+Sudan,2003,10993
+Sudan,2004,12095
+Sudan,2005,12730
+Sudan,2006,12194
+Sudan,2007,17152
+Sudan,2008,21475
+Sudan,2009,22210
+Sudan,2010,9958
+Sudan,2011,18636
+Sudan,2012,8824
+Sudan,2013,
+Swaziland,1995,660
+Swaziland,1996,2194
+Swaziland,1997,
+Swaziland,1998,
+Swaziland,1999,
+Swaziland,2000,1593
+Swaziland,2001,2542
+Swaziland,2002,1399
+Swaziland,2003,1581
+Swaziland,2004,1891
+Swaziland,2005,2179
+Swaziland,2006,7913
+Swaziland,2007,
+Swaziland,2008,3105
+Swaziland,2009,3498
+Swaziland,2010,9706
+Swaziland,2011,5633
+Swaziland,2012,6868
+Swaziland,2013,6691
+Syrian Arab Republic,1995,1321
+Syrian Arab Republic,1996,1523
+Syrian Arab Republic,1997,1402
+Syrian Arab Republic,1998,1382
+Syrian Arab Republic,1999,
+Syrian Arab Republic,2000,1482
+Syrian Arab Republic,2001,1454
+Syrian Arab Republic,2002,1447
+Syrian Arab Republic,2003,1545
+Syrian Arab Republic,2004,1561
+Syrian Arab Republic,2005,1350
+Syrian Arab Republic,2006,3865
+Syrian Arab Republic,2007,4030
+Syrian Arab Republic,2008,3671
+Syrian Arab Republic,2009,3854
+Syrian Arab Republic,2010,3614
+Syrian Arab Republic,2011,3335
+Syrian Arab Republic,2012,2875
+Syrian Arab Republic,2013,2795
+Tajikistan,1995,
+Tajikistan,1996,232
+Tajikistan,1997,245
+Tajikistan,1998,435
+Tajikistan,1999,
+Tajikistan,2000,
+Tajikistan,2001,704
+Tajikistan,2002,687
+Tajikistan,2003,
+Tajikistan,2004,601
+Tajikistan,2005,1737
+Tajikistan,2006,
+Tajikistan,2007,6081
+Tajikistan,2008,6115
+Tajikistan,2009,5864
+Tajikistan,2010,5959
+Tajikistan,2011,5935
+Tajikistan,2012,5484
+Tajikistan,2013,5306
+Thailand,1995,20273
+Thailand,1996,16997
+Thailand,1997,13212
+Thailand,1998,7962
+Thailand,1999,14932
+Thailand,2000,17755
+Thailand,2001,28542
+Thailand,2002,25593
+Thailand,2003,28459
+Thailand,2004,28421
+Thailand,2005,28360
+Thailand,2006,29081
+Thailand,2007,28587
+Thailand,2008,28788
+Thailand,2009,32810
+Thailand,2010,33450
+Thailand,2011,33169
+Thailand,2012,30998
+Thailand,2013,
+Togo,1995,877
+Togo,1996,911
+Togo,1997,
+Togo,1998,927
+Togo,1999,904
+Togo,2000,982
+Togo,2001,
+Togo,2002,1203
+Togo,2003,1255
+Togo,2004,1541
+Togo,2005,1766
+Togo,2006,2131
+Togo,2007,2346
+Togo,2008,2234
+Togo,2009,2734
+Togo,2010,2096
+Togo,2011,2094
+Togo,2012,2112
+Togo,2013,2600
+Turkey,1995,
+Turkey,1996,
+Turkey,1997,
+Turkey,1998,
+Turkey,1999,
+Turkey,2000,
+Turkey,2001,
+Turkey,2002,
+Turkey,2003,
+Turkey,2004,298
+Turkey,2005,7450
+Turkey,2006,18544
+Turkey,2007,17809
+Turkey,2008,16760
+Turkey,2009,15943
+Turkey,2010,15183
+Turkey,2011,14417
+Turkey,2012,13535
+Turkey,2013,13170
+Uganda,1995,13678
+Uganda,1996,15175
+Uganda,1997,17801
+Uganda,1998,18222
+Uganda,1999,17468
+Uganda,2000,17542
+Uganda,2001,17283
+Uganda,2002,19099
+Uganda,2003,20312
+Uganda,2004,20939
+Uganda,2005,20524
+Uganda,2006,20356
+Uganda,2007,21303
+Uganda,2008,22766
+Uganda,2009,23113
+Uganda,2010,23439
+Uganda,2011,24940
+Uganda,2012,24862
+Uganda,2013,25408
+Ukraine,1995,8263
+Ukraine,1996,9564
+Ukraine,1997,9463
+Ukraine,1998,10586
+Ukraine,1999,10412
+Ukraine,2000,10738
+Ukraine,2001,11952
+Ukraine,2002,
+Ukraine,2003,12785
+Ukraine,2004,
+Ukraine,2005,
+Ukraine,2006,18500
+Ukraine,2007,25645
+Ukraine,2008,35739
+Ukraine,2009,33424
+Ukraine,2010,3355
+Ukraine,2011,10502
+Ukraine,2012,27489
+Ukraine,2013,34144
+United Kingdom of Great Britain and Northern Ireland,1995,
+United Kingdom of Great Britain and Northern Ireland,1996,
+United Kingdom of Great Britain and Northern Ireland,1997,789
+United Kingdom of Great Britain and Northern Ireland,1998,1342
+United Kingdom of Great Britain and Northern Ireland,1999,796
+United Kingdom of Great Britain and Northern Ireland,2000,1027
+United Kingdom of Great Britain and Northern Ireland,2001,1090
+United Kingdom of Great Britain and Northern Ireland,2002,1170
+United Kingdom of Great Britain and Northern Ireland,2003,1133
+United Kingdom of Great Britain and Northern Ireland,2004,1306
+United Kingdom of Great Britain and Northern Ireland,2005,1346
+United Kingdom of Great Britain and Northern Ireland,2006,8137
+United Kingdom of Great Britain and Northern Ireland,2007,11176
+United Kingdom of Great Britain and Northern Ireland,2008,6515
+United Kingdom of Great Britain and Northern Ireland,2009,6988
+United Kingdom of Great Britain and Northern Ireland,2010,7148
+United Kingdom of Great Britain and Northern Ireland,2011,7828
+United Kingdom of Great Britain and Northern Ireland,2012,7678
+United Kingdom of Great Britain and Northern Ireland,2013,7384
+United Republic of Tanzania,1995,19954
+United Republic of Tanzania,1996,21472
+United Republic of Tanzania,1997,21307
+United Republic of Tanzania,1998,23833
+United Republic of Tanzania,1999,24123
+United Republic of Tanzania,2000,24039
+United Republic of Tanzania,2001,24685
+United Republic of Tanzania,2002,24136
+United Republic of Tanzania,2003,24899
+United Republic of Tanzania,2004,25823
+United Republic of Tanzania,2005,25264
+United Republic of Tanzania,2006,24724
+United Republic of Tanzania,2007,24520
+United Republic of Tanzania,2008,58890
+United Republic of Tanzania,2009,60050
+United Republic of Tanzania,2010,59678
+United Republic of Tanzania,2011,28587
+United Republic of Tanzania,2012,30063
+United Republic of Tanzania,2013,
+United States of America,1995,8091
+United States of America,1996,7452
+United States of America,1997,6934
+United States of America,1998,6623
+United States of America,1999,6274
+United States of America,2000,5884
+United States of America,2001,5651
+United States of America,2002,5434
+United States of America,2003,5365
+United States of America,2004,5251
+United States of America,2005,5089
+United States of America,2006,13767
+United States of America,2007,13283
+United States of America,2008,12893
+United States of America,2009,11370
+United States of America,2010,10305
+United States of America,2011,10319
+United States of America,2012,9918
+United States of America,2013,9106
+Uzbekistan,1995,
+Uzbekistan,1996,3350
+Uzbekistan,1997,
+Uzbekistan,1998,39
+Uzbekistan,1999,4175
+Uzbekistan,2000,3825
+Uzbekistan,2001,4598
+Uzbekistan,2002,2766
+Uzbekistan,2003,4690
+Uzbekistan,2004,5119
+Uzbekistan,2005,5695
+Uzbekistan,2006,18574
+Uzbekistan,2007,17911
+Uzbekistan,2008,15971
+Uzbekistan,2009,16569
+Uzbekistan,2010,15734
+Uzbekistan,2011,13995
+Uzbekistan,2012,14132
+Uzbekistan,2013,20812
+Venezuela (Bolivarian Republic of),1995,
+Venezuela (Bolivarian Republic of),1996,
+Venezuela (Bolivarian Republic of),1997,
+Venezuela (Bolivarian Republic of),1998,
+Venezuela (Bolivarian Republic of),1999,3670
+Venezuela (Bolivarian Republic of),2000,
+Venezuela (Bolivarian Republic of),2001,
+Venezuela (Bolivarian Republic of),2002,3444
+Venezuela (Bolivarian Republic of),2003,3882
+Venezuela (Bolivarian Republic of),2004,3776
+Venezuela (Bolivarian Republic of),2005,3653
+Venezuela (Bolivarian Republic of),2006,6448
+Venezuela (Bolivarian Republic of),2007,6075
+Venezuela (Bolivarian Republic of),2008,6059
+Venezuela (Bolivarian Republic of),2009,6213
+Venezuela (Bolivarian Republic of),2010,6087
+Venezuela (Bolivarian Republic of),2011,6069
+Venezuela (Bolivarian Republic of),2012,6206
+Venezuela (Bolivarian Republic of),2013,6555
+Viet Nam,1995,
+Viet Nam,1996,48911
+Viet Nam,1997,53647
+Viet Nam,1998,54873
+Viet Nam,1999,53805
+Viet Nam,2000,53169
+Viet Nam,2001,54202
+Viet Nam,2002,56811
+Viet Nam,2003,55937
+Viet Nam,2004,58389
+Viet Nam,2005,55570
+Viet Nam,2006,56437
+Viet Nam,2007,54460
+Viet Nam,2008,53484
+Viet Nam,2009,51290
+Viet Nam,2010,52289
+Viet Nam,2011,50751
+Viet Nam,2012,51033
+Viet Nam,2013,50607
+Yemen,1995,3681
+Yemen,1996,683
+Yemen,1997,4718
+Yemen,1998,4896
+Yemen,1999,4130
+Yemen,2000,5565
+Yemen,2001,4968
+Yemen,2002,4259
+Yemen,2003,3793
+Yemen,2004,3434
+Yemen,2005,3379
+Yemen,2006,3342
+Yemen,2007,3537
+Yemen,2008,3540
+Yemen,2009,3576
+Yemen,2010,3584
+Yemen,2011,3135
+Yemen,2012,9615
+Yemen,2013,10327
+Zambia,1995,8577
+Zambia,1996,
+Zambia,1997,
+Zambia,1998,
+Zambia,1999,
+Zambia,2000,12927
+Zambia,2001,
+Zambia,2002,16351
+Zambia,2003,18934
+Zambia,2004,17247
+Zambia,2005,14857
+Zambia,2006,14025
+Zambia,2007,13378
+Zambia,2008,13211
+Zambia,2009,12866
+Zambia,2010,
+Zambia,2011,41958
+Zambia,2012,38869
+Zambia,2013,40638
+Zimbabwe,1995,
+Zimbabwe,1996,
+Zimbabwe,1997,
+Zimbabwe,1998,
+Zimbabwe,1999,
+Zimbabwe,2000,
+Zimbabwe,2001,
+Zimbabwe,2002,11261
+Zimbabwe,2003,14488
+Zimbabwe,2004,14581
+Zimbabwe,2005,13155
+Zimbabwe,2006,43052
+Zimbabwe,2007,38928
+Zimbabwe,2008,36060
+Zimbabwe,2009,41768
+Zimbabwe,2010,42872
+Zimbabwe,2011,36960
+Zimbabwe,2012,34391
+Zimbabwe,2013,32899
