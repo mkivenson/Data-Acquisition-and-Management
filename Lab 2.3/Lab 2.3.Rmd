@@ -1,0 +1,80 @@
+---
+title: "Lab 2.3"
+author: "Mary Anna Kivenson"
+date: "2/5/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load SQL Library
+Install the RPostgreSQL library and load the SQL Server.
+```{r libraries}
+library(RPostgreSQL);
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, dbname = "tb", host="localhost", user="user", password="password");
+```
+
+
+## Load Population Dataframe
+Load the population dataframe from github.
+```{r population-dataframe}
+population <- read.csv('https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Lab%202.3/population.csv', header=TRUE, sep=',')
+head(population)
+```
+
+## Load tb Dataframe from SQL Database
+Load and query the tb database from SQL.
+```{r tb-dataframe}
+tb <- dbGetQuery(con, statement = paste(
+  'SELECT country, year, SUM(child + adult + elderly) AS cases',
+  'FROM tb',
+  'WHERE child + adult + elderly != 0',
+  'GROUP BY country, year',
+  'ORDER BY country, year;'));
+head(tb, n=3)
+```
+
+## Left join tb and population databases
+Left join the tb and population databases by country and year.
+```{r left-join}
+join_tb<- merge(x = tb, y = population, by = c("country", "year"), all.x = TRUE)
+head(join_tb, n=3)
+```
+
+## Add column calculating rate of tb occurance
+Calculate the rate of tb occurance by dividing the amount of tb cases by total population.
+```{r rate-tb}
+join_tb$ratetb <- join_tb[,3]/join_tb[,4]
+```
+
+##tb occurance summary
+Summaries by country of tb incidence occurance and rate. 
+
+**Countries with highest mean tb incidence rates**
+```{r summary-tb-1}
+tb_by_country_top <- sort(tapply(join_tb$cases, join_tb$country, mean),decreasing=TRUE)
+head(tb_by_country_top)
+```
+
+**Countries with highest mean tb occurance per population**
+```{r summary-tb-2}
+tbrate_by_country_top <- sort(tapply(join_tb$ratetb, join_tb$country, mean),decreasing=TRUE)
+head(tbrate_by_country_top)
+```
+
+**Annual mean tb incidence rates**
+```{r summary-tb-3}
+barplot(tapply(join_tb$cases, join_tb$year, mean))
+
+```
+
+**Annual mean tb occurance per population**
+```{r summary-tb-4}
+barplot(tapply(join_tb$ratetb, join_tb$year, mean))
+
+```
