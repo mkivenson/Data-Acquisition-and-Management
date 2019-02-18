@@ -97,5 +97,11 @@ datatable(names)
 ```{r question-9}
 string <- "clcopCow1zmstc087wnkig7OvdicpNuggvhyn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1Yww0jigOd6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.SqoU65fPa1otfb7wEm24k6t3sR9zqe5fy89n6Nd5t9kc4fE905gmc4Rgxo5nhDk!gr"
 #Congratulations you are a super nerd
-str_extract_all(string, pattern = "[A-Z]")
+code <- unlist(str_extract_all(string, pattern = "[^\\.]+"), use.names = FALSE)
+
+for (i in 1:length(code)) {
+  decode <- str_extract_all(code[i], pattern = "[A-Z]|!")
+  code[i] = paste(unlist(decode), collapse ="")
+}
+paste(code, collapse = " ")
 ```
