@@ -240,8 +240,8 @@ for (i in 1:length(names$name)){
   }  
 }
 datatable(names)</code></pre>
-<div id="htmlwidget-4d9ff5e4db49b88852d3" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4d9ff5e4db49b88852d3">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],["Moe Szyslak","Burns, C. Montgomery","Rev. Timothy Lovejoy","Ned Flanders","Simpson, Homer","Dr. Julius Hibbert"],["Moe","Montgomery","Timothy","Ned","Homer","Julius"],["Szyslak","Burns","Lovejoy","Flanders","Simpson","Hibbert"],[false,true,false,false,false,false],[false,false,true,false,false,true]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>first_name<\/th>\n      <th>last_name<\/th>\n      <th>middle_name<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-66b712a540422e056226" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-66b712a540422e056226">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],["Moe Szyslak","Burns, C. Montgomery","Rev. Timothy Lovejoy","Ned Flanders","Simpson, Homer","Dr. Julius Hibbert"],["Moe","Montgomery","Timothy","Ned","Homer","Julius"],["Szyslak","Burns","Lovejoy","Flanders","Simpson","Hibbert"],[false,true,false,false,false,false],[false,false,true,false,false,true]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>first_name<\/th>\n      <th>last_name<\/th>\n      <th>middle_name<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="question-4" class="section level3">
 <h3>Question 4</h3>
@@ -255,6 +255,15 @@ datatable(names)</code></pre>
 # Matches a date (or series of numbers) using format dd/mm/yyyy or mm/dd/yyyy. Example: &quot;02/17/2019&quot;.</code></pre>
 <pre class="r"><code># &lt;(.+?)&gt;.&lt;/\\1&gt;
 # Matches a html open and close tags with on character in them. Example: &quot;&lt;html&gt; &lt;/html&gt;&quot;.</code></pre>
+</div>
+<div id="question-9" class="section level3">
+<h3>Question 9</h3>
+<pre class="r"><code>string &lt;- &quot;clcopCow1zmstc087wnkig7OvdicpNuggvhyn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1Yww0jigOd6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.SqoU65fPa1otfb7wEm24k6t3sR9zqe5fy89n6Nd5t9kc4fE905gmc4Rgxo5nhDk!gr&quot;
+#Congratulations you are a super nerd
+str_extract_all(string, pattern = &quot;[A-Z]&quot;)</code></pre>
+<pre><code>## [[1]]
+##  [1] &quot;C&quot; &quot;O&quot; &quot;N&quot; &quot;G&quot; &quot;R&quot; &quot;A&quot; &quot;T&quot; &quot;U&quot; &quot;L&quot; &quot;A&quot; &quot;T&quot; &quot;I&quot; &quot;O&quot; &quot;N&quot; &quot;S&quot; &quot;Y&quot; &quot;O&quot;
+## [18] &quot;U&quot; &quot;A&quot; &quot;R&quot; &quot;E&quot; &quot;A&quot; &quot;S&quot; &quot;U&quot; &quot;P&quot; &quot;E&quot; &quot;R&quot; &quot;N&quot; &quot;E&quot; &quot;R&quot; &quot;D&quot;</code></pre>
 </div>
 
 
