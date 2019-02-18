@@ -40,14 +40,14 @@ for (i in 1:length(names$name)){
     names$last_name[i] <- name1[1]
   }
   
-  # last, m. first
+  # last name, m. first name
   if (str_detect(names$name, pattern=",")[i] == TRUE && str_detect(names$name, pattern="\\.")[i] == TRUE) {
     names$middle_name[i] <- TRUE
     name1 <- unlist(str_extract_all(names$name[i], pattern = "[A-z]+"), use.names=FALSE)
     names$first_name[i] <- name1[3]
     names$last_name[i] <- name1[1]
   }
-  #
+  # title first name last name
   if (str_detect(names$name, pattern=",")[i] == FALSE && str_detect(names$name, pattern="\\.")[i] == TRUE) {
     names$title[i] <- TRUE
     name1 <- unlist(str_extract_all(names$name[i], pattern = "[A-z]+"), use.names=FALSE)

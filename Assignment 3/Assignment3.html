@@ -224,14 +224,14 @@ for (i in 1:length(names$name)){
     names$last_name[i] &lt;- name1[1]
   }
   
-  # last, m. first
+  # last name, m. first name
   if (str_detect(names$name, pattern=&quot;,&quot;)[i] == TRUE &amp;&amp; str_detect(names$name, pattern=&quot;\\.&quot;)[i] == TRUE) {
     names$middle_name[i] &lt;- TRUE
     name1 &lt;- unlist(str_extract_all(names$name[i], pattern = &quot;[A-z]+&quot;), use.names=FALSE)
     names$first_name[i] &lt;- name1[3]
     names$last_name[i] &lt;- name1[1]
   }
-  #
+  # title first name last name
   if (str_detect(names$name, pattern=&quot;,&quot;)[i] == FALSE &amp;&amp; str_detect(names$name, pattern=&quot;\\.&quot;)[i] == TRUE) {
     names$title[i] &lt;- TRUE
     name1 &lt;- unlist(str_extract_all(names$name[i], pattern = &quot;[A-z]+&quot;), use.names=FALSE)
@@ -240,8 +240,8 @@ for (i in 1:length(names$name)){
   }  
 }
 datatable(names)</code></pre>
-<div id="htmlwidget-66b712a540422e056226" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-66b712a540422e056226">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],["Moe Szyslak","Burns, C. Montgomery","Rev. Timothy Lovejoy","Ned Flanders","Simpson, Homer","Dr. Julius Hibbert"],["Moe","Montgomery","Timothy","Ned","Homer","Julius"],["Szyslak","Burns","Lovejoy","Flanders","Simpson","Hibbert"],[false,true,false,false,false,false],[false,false,true,false,false,true]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>first_name<\/th>\n      <th>last_name<\/th>\n      <th>middle_name<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-92b3f7a017ea49703cd2" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-92b3f7a017ea49703cd2">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],["Moe Szyslak","Burns, C. Montgomery","Rev. Timothy Lovejoy","Ned Flanders","Simpson, Homer","Dr. Julius Hibbert"],["Moe","Montgomery","Timothy","Ned","Homer","Julius"],["Szyslak","Burns","Lovejoy","Flanders","Simpson","Hibbert"],[false,true,false,false,false,false],[false,false,true,false,false,true]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>name<\/th>\n      <th>first_name<\/th>\n      <th>last_name<\/th>\n      <th>middle_name<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="question-4" class="section level3">
 <h3>Question 4</h3>
