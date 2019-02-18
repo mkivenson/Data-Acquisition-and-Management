@@ -1,0 +1,96 @@
+---
+title: "Assignment 3"
+author: "Mary Anna Kivenson"
+date: "2/17/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stringr)
+library(DT)
+```
+
+
+###Question 3
+
+```{r question-1}
+raw.data <-"555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert"
+names <- data.frame(matrix(vector(), 6, 5,
+                dimnames=list(c(), c("name","first_name","last_name","middle_name","title"))),
+                stringsAsFactors=F)
+names$name <- unlist(str_extract_all(raw.data, pattern = "\\D+[A-z]"), use.names=FALSE)
+names$middle_name <- FALSE
+names$title <- FALSE
+
+for (i in 1:length(names$name)){
+  #first name last name
+  if (str_detect(names$name, pattern="[[:punct:]]")[i] == FALSE){
+    name1 <- unlist(str_extract_all(names$name[i], pattern = "[A-z]+"), use.names=FALSE)
+    names$first_name[i] <- name1[1]
+    names$last_name[i] <- name1[2]
+  }
+  
+  #lastname, first name no middle name
+  if(str_detect(names$name, pattern="([A-z]+,\\s+[A-z]+)(?!.)")[i] == TRUE){
+    name1 <- unlist(str_extract_all(names$name[i], pattern = "[A-z]+"), use.names=FALSE)
+    names$first_name[i] <- name1[2]
+    names$last_name[i] <- name1[1]
+  }
+  
+  # last, m. first
+  if (str_detect(names$name, pattern=",")[i] == TRUE && str_detect(names$name, pattern="\\.")[i] == TRUE) {
+    names$middle_name[i] <- TRUE
+    name1 <- unlist(str_extract_all(names$name[i], pattern = "[A-z]+"), use.names=FALSE)
+    names$first_name[i] <- name1[3]
+    names$last_name[i] <- name1[1]
+  }
+  #
+  if (str_detect(names$name, pattern=",")[i] == FALSE && str_detect(names$name, pattern="\\.")[i] == TRUE) {
+    names$title[i] <- TRUE
+    name1 <- unlist(str_extract_all(names$name[i], pattern = "[A-z]+"), use.names=FALSE)
+    names$first_name[i] <- name1[2]
+    names$last_name[i] <- name1[3]
+  }  
+}
+datatable(names)
+```
+
+###Question 4
+
+```{r question-2}
+# [0-9]+\\$:
+# Matches any string of number that is followed by a dollar sign character. Example: "40$".
+```
+
+
+
+```{r question-3}
+# \\b[a-z]{1,4}\\b
+# Matches any one to four letter lowercase word that starts or ends with any non-word character (excluding spaces and punctuation). Example: All the words in this sentence will match: "the dog ran over the hill".
+```
+
+
+
+```{r question-4}
+# .*?\\.txt$
+# Matches any phrase with a .txt extension and .txt has to be the end of the string. Example: "file.txt" is a match.
+```
+
+
+
+```{r question-5}
+# \\d{2}/\\d{2}/\\d{4}
+# Matches a date (or series of numbers) using format dd/mm/yyyy or mm/dd/yyyy. Example: "02/17/2019".
+```
+
+
+
+```{r question-6}
+# <(.+?)>.</\\1>
+# Matches a html open and close tags with on character in them. Example: "<html> </html>".
+```
+
+
