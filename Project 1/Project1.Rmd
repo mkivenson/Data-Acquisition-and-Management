@@ -1,0 +1,160 @@
+---
+title: "Analyzing Chess Tournament Results"
+author: "Mary Anna Kivenson"
+date: "2/23/2019"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stringr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(plotly)
+library(readr)
+library(DT)
+library(RColorBrewer)
+```
+
+## Import
+
+Given a text file containing chess tournament results in the following format, we import the results into R and tidy the data into a structured format. As shown below, the data is semi-structured and must be tidied.
+```{r import}
+#import tournament data from my github repository
+tournamentraw <- read_lines(file="https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Project%201/tournamentinfo.txt")
+head(tournamentraw, n=15)
+```
+
+## Removing Extra Characters
+In order to structure the data, the following packages are used.
+
+* library(stringr)  
+* library(dplyr)  
+* library(readr)  
+* library(tidyr)  
+
+In this section, we remove all text separators and separate strings into columns using text length. This data is still poorly structured and includes white space.
+```{r cleanup}
+#remove all text separators
+tournamentraw <- str_remove_all(tournamentraw,pattern = "(-){2,}|\\|")
+
+#separate string into columns
+tournamentraw <- read_fwf(tournamentraw,fwf_widths(c(5,33,6,5,5,5,5,5,5,5), c("pair","playername","total","round1","round2","round3","round4","round5","round6","round7")))
+tournamentraw <- tournamentraw[-c(0:2),]
+datatable(as.data.frame(tournamentraw))
+```
+
+## New Dataframe
+We create a new dataframe for each of the 64 players and 6 fields that are required. The fields of interest are:  
+
+* Player’s Number  
+* Player’s Name  
+* Player’s State  
+* Total Number of Points  
+* Player’s Pre-Rating  
+* Average Pre Chess Rating of Opponents  
+
+```{r table-construction}
+
+tournament <- data.frame(matrix(vector(), 64, 6,
+                dimnames=list(c(), c("number",
+                                     "name",
+                                     "state",
+                                     "totalpoints",
+                                     "prerating",
+                                     "opponent"))),
+                stringsAsFactors=F) 
+```
+
+## Player Information
+We can use various regular expressions to populate player information fields. In order to avoid issues that may be caused by NA values, the function na.omit was used to exclude null values. 
+
+```{r table-playerinfo}
+#Player’s Number
+tournament$number <- grep("([0-9])", 
+                          tournamentraw$pair, 
+                          value = TRUE)
+
+#Player’s Name
+tournament$name <- grep("([A-Z]+\\s){1,}", 
+                        tournamentraw$playername, 
+                        value = TRUE)
+
+#Player’s State
+tournament$state <- grep("([A-Z])", 
+                         tournamentraw$pair, 
+                         value = TRUE)
+
+#Total Number of Points
+tournament$totalpoints <- as.numeric(grep("(\\d.\\d)", 
+                                          tournamentraw$total, 
+                                          value = TRUE))
+
+#Player’s Pre-rating
+tournament$prerating <- na.omit(str_extract(tournamentraw$playername, 
+                                            "\\d+(?=\\s*->)|\\d+(?=P\\d{2}\\s*->)"))
+datatable(tournament)
+```
+
+## Opponent Ratings
+While the previous vectors looked at only player informtion from one column at a time, the average of the opponent ratings require more effort. We extract ratings from seven rounds, match them to the correct opponents, and apply a mean function.
+```{r table-opponentinfo}
+#Extract opponent numbers from each round
+odd_rows <- seq(1,128,2)
+matches <- data.frame(matrix(vector(), 64, 9,
+                dimnames=list(c(), 
+                              c("person","prerating","r1","r2","r3","r4","r5","r6","r7"))),
+                stringsAsFactors=F)
+
+#Create a new dataframe for opponent data
+matches$person <- tournament$number
+matches$prerating <- tournament$prerating
+matches$r1 <- str_extract(tournamentraw$round1[odd_rows], "\\d{1,2}")
+matches$r2 <- str_extract(tournamentraw$round2[odd_rows], "\\d{1,2}")
+matches$r3 <- str_extract(tournamentraw$round3[odd_rows], "\\d{1,2}")
+matches$r4 <- str_extract(tournamentraw$round4[odd_rows], "\\d{1,2}")
+matches$r5 <- str_extract(tournamentraw$round5[odd_rows], "\\d{1,2}")
+matches$r6 <- str_extract(tournamentraw$round6[odd_rows], "\\d{1,2}")
+matches$r7 <- str_extract(tournamentraw$round7[odd_rows], "\\d{1,2}")
+
+#Expand matches data, then join matches and tournament data to return opponent pre-ratings
+matches <- gather(matches,"round","number",c(r1,r2,r3,r4,r5,r6,r7))
+matches <- left_join(x = matches, y = tournament, by = "number")
+matches <- subset(matches, select=c(person,number,prerating.y))
+matches$prerating.y <- as.numeric(matches$prerating.y)
+
+#Create a function that calculates mean and ignores NA values
+meanfunction <- function(x) {
+  y <- mean(x,na.rm=TRUE)
+  return(y)
+}
+
+#Add the average opponent pre-ratings to the tournament table
+tournament$opponent <- aggregate(matches$prerating.y,list(matches$person), FUN = meanfunction)[,2]
+datatable(tournament)
+```
+
+## Plotting Ratings
+**Is there a relationship between pre-ratings of players and total points?**
+
+For the plot below, we create a new variable: the pre-rating ratio. This ratio determines the pre-rating of a player to the average pre-ratings of their opponents. Ratios close to 1 indicate that players and their opponents are generally evenly matched, while ratios below 1 indicate opponents are more skilled and ratios above 1 indicate a player is more skilled than their opponents. Box plots were created for the pre-rating ratio, grouped by total points.
+
+According to this plot, the total points attained and the ratio of pre-ratings have a positive relationship, except at the lower and higher point values.
+```{r pressure, echo=TRUE, warning=FALSE}
+# create ratio variable
+tournament$ratio <- as.numeric(tournament$prerating) / as.numeric(tournament$opponent)
+
+# create scatter plot
+ggplot(tournament, aes(totalpoints, ratio, fill = totalpoints)) +
+  geom_boxplot(aes(group = totalpoints)) +
+  geom_smooth(method = "loess", se=FALSE, color="blue", aes(group=1)) +
+  scale_fill_gradient(low="red", high="green") +
+  ggtitle("Distribution of Pre-Rating Ratios by Total Points") + 
+  xlab("Total Points") +
+  ylab("Ratio of Pre-Ratings")
+```
+
