@@ -138,6 +138,12 @@ tournament$opponent <- aggregate(matches$prerating.y,list(matches$person), FUN =
 datatable(tournament)
 ```
 
+## Export
+```{r export}
+#write.csv
+write.csv(tournament, file = 'tournamentoutput.csv', row.names = FALSE)
+```
+
 ## Plotting Ratings
 **Is there a relationship between pre-ratings of players and total points?**
 
