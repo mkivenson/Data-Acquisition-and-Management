@@ -1,0 +1,56 @@
+---
+title: "Assignment 4"
+author: "Mary Anna Kivenson"
+date: "2/25/2019"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(DT)
+library(zoo)
+```
+
+## Importing Data
+Import a .csv file that uses a "wide” structure (see below). We will perform tidying and transformations on this data.
+```{r data}
+flights <- read.csv("https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Assignment%204/airlines.csv", na.strings="")
+flights
+```
+
+## Tidying and Transforming
+Using the dplyr and zoo libraries, we tidy this data so that:
+
+* Columns for different cities become one column  
+
+```{r t1, echo=FALSE}
+flights <- (gather(flights,"city","count","Los.Angeles","Phoenix","San.Diego","San.Francisco","Seattle"))
+```
+
+* All columns have column names  
+
+```{r t2, echo=FALSE}
+colnames(flights) <- c('airline','status','city','count')
+```
+
+* All rows are populated with airline information  
+
+```{r t3, echo=FALSE}
+flights <- flights %>% do(na.locf(flights))
+```
+
+* All rows are distinct  
+
+```{r t4, echo=FALSE}
+flights <- flights %>% distinct()
+```
+
+This gives us the tidy data table you see below.   
+
+```{r t5, echo=FALSE}
+datatable(flights)
+```
