@@ -13,44 +13,89 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(DT)
 library(zoo)
+library(ggplot2)
+library(reshape2)
+library(RColorBrewer)
+
 ```
 
 ## Importing Data
-Import a .csv file that uses a "wide” structure (see below). We will perform tidying and transformations on this data.
+Import a .csv file that uses a "wide” structure (see below). We will tidy and transform this data.
+![raw data](https://github.com/mkivenson/Data-Acquisition-and-Management/raw/master/Assignment%204/assignmentpic4.png)
+
+The csv data pictured previously is stored in the flights dataframe.  
 ```{r data}
-flights <- read.csv("https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Assignment%204/airlines.csv", na.strings="")
-flights
+raw <- read.csv("https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Assignment%204/airlines.csv", na.strings="")
+raw
 ```
 
 ## Tidying and Transforming
 Using the dplyr and zoo libraries, we tidy this data so that:
 
-* Columns for different cities become one column  
+####Columns for different cities become one column  
 
-```{r t1, echo=FALSE}
-flights <- (gather(flights,"city","count","Los.Angeles","Phoenix","San.Diego","San.Francisco","Seattle"))
+```{r t1}
+flights <- (gather(raw,"city","count","Los.Angeles","Phoenix","San.Diego","San.Francisco","Seattle"))
 ```
 
-* All columns have column names  
+####All columns have column names  
 
-```{r t2, echo=FALSE}
+```{r t2}
 colnames(flights) <- c('airline','status','city','count')
 ```
 
-* All rows are populated with airline information  
+####All rows are populated with airline information  
 
-```{r t3, echo=FALSE}
+```{r t3}
 flights <- flights %>% do(na.locf(flights))
 ```
 
-* All rows are distinct  
+####All rows are distinct  
 
-```{r t4, echo=FALSE}
+```{r t4}
 flights <- flights %>% distinct()
 ```
 
 This gives us the tidy data table you see below.   
 
-```{r t5, echo=FALSE}
+```{r t5}
 datatable(flights)
+```
+
+## Analysis of Arrival Delays
+#### How often do flights get delayed at each airport, airline, and city? How often are they on time? 
+With three categorical variables and one numerical variable, it may be challenging to create a visual that depicts all three. First, I created a facet grid showing the count of occurances of each combination of categorical variables (airline, city, and delay status). Observe that AM West flights at Phoenix and Alaska flights at Seattle seem to be on time the most.
+
+```{r analysis1}
+ggplot(flights, aes(city, airline, size = count, color = count)) + geom_point() + facet_grid(rows = vars(status))   + scale_color_gradient(low="light grey", high="black")
+```
+
+#### What is the probability of a flight that is delayed or on time?
+
+In the previous chart, we see that AM West at Phoenix has the most on time flights - however the same airline at the same city also has more delays than any other city for that airline. It is likely that Phoenix just has a more AM West and Alaska flights. This information is not very useful in determining how punctual flights at a certain airline or city are. Instead, we use dplyr to turn the counts into a proportion of delayed and on time flights for each combination of city and airline.
+```{r analysis2, warning=FALSE}
+flightsprop <- flights %>%
+group_by(city, airline, status) %>%
+  summarise (count) %>%
+  mutate(freq = count / sum(count))
+
+datatable(flightsprop)
+```
+
+#### Which airlines and cities have the most reliable flights?
+
+Using the flight proportions calculated above, we create another facet grid to show which airlines and cities have the highest proportion of on time flights. This shows us that both AM West and Alaska are both reliable in Phoenix. These charts show that Phoenix has the most flights and highest reliability for both airlines.
+
+```{r analysis-on-time}
+flightsprop_ontime <- subset(flightsprop, status == 'on time')
+ggplot(flightsprop_ontime, aes(city, airline, size = freq, color = freq)) + geom_point() + facet_grid(rows = vars(status))  + scale_color_gradient(low="light blue", high="dark blue")
+```
+
+#### Which airlines and cities have the least reliable flights?
+
+We create a similar table to the one above, except this facet grid shows the proportions of delayed flights for each airline and city. Although it is slightly redundant, it is helpful to review the inverse grid. We see that AM West at San Francisco is the least reliable airline/city combination, followed by AM West at Seattle.
+
+```{r analysis-delay}
+flightsprop_delay <- subset(flightsprop, status == 'delayed')
+ggplot(flightsprop_delay, aes(city, airline, size = freq, color = freq)) + geom_point() + facet_grid(rows = vars(status))  + scale_color_gradient(low="pink", high="dark red")
 ```
