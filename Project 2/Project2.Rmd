@@ -1,0 +1,103 @@
+---
+title: "Does Stop-and-Frisk Affect Crime Rates?"
+author: "Mary Anna Kivenson"
+date: "3/9/2019"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stringr)
+library(dplyr)
+library(plyr)
+library(magrittr)
+library(DT)
+library(tidyr)
+library(ggplot2)
+```
+This project will tidy the following datasets to analyze stop-and-frisk data, demographics information, and crime rates in New York City and in the United States:  
+
+* [Stop and Frisk HTML Data from the ACLU](https://www.nyclu.org/en/stop-and-frisk-data)  
+* [NYC Demographic Long Data from the 2010 Census](https://www1.nyc.gov/assets/planning/download/office/data-maps/nyc-population/census2010/t_sf1_dp_nyc.xlsx)  
+* [Annual Crime in Large Local Agencies Wide Data](https://www.ucrdatatool.gov/Search/Crime/Local/TrendsInOneVarStepTwoLarge.cfm)  
+
+
+## Importing Stop and Frisk Data
+The ACLU provides annual [Stop and Frisk Data](https://www.nyclu.org/en/stop-and-frisk-data) that summarizes NYPD stops by year, outcome, race, and age. The code below extracts the ACLU html webpage as a string, then uses regular expressions to extract only the report summary (excluding other html on the page, such as links and charts). Finally, ldply is used to split the list by element and to create a dataframe.
+
+
+### Raw HTML Data Preview
+This is a 10 line preview of the HTML data extracted from the ACLU website. It is mostly comprised of unneccesary information, and the strings that are useful are not included in the preview.
+```{r dataset1-preview}
+#Preview of html Stop-and-Frisk Data
+head(readLines("https://www.nyclu.org/en/stop-and-frisk-data"), n=10)
+```
+
+
+### Extract Relevant Strings
+Inspecting the elements of the html webpage reveals that the necessary strings are list elements within an unordered list:
+![Inspect Element](https://github.com/mkivenson/Data-Acquisition-and-Management/raw/master/Project%202/InspectElement.png)
+
+There are also list elements that contain links, so we remove those and then extract the remaining list elements. This returns only the strings that we are interested in. 
+```{r dataset1-strings}
+#Extract relevant strings from html data
+stop_frisk_data <- readLines("https://www.nyclu.org/en/stop-and-frisk-data") %>%
+  str_remove_all("<(li)><(a href).+(<\\/a>)<\\/\\1>") %>%  #removes all list elements that contain links
+  str_extract(pattern = "<(li)>.+<\\/\\1>") %>%  #extracts all remaining list elements
+  na.omit() %>% #removes NA values
+  `attributes<-`(NULL) #removes attributes created by na.omit 
+head(stop_frisk_data, n=3, options = list(scrollX = FALSE))
+```
+
+### Transform Strings into a Dataframe
+To transform a list of strings into a dataframe, we first use regular expressions to extract all years, numbers, and percentages from the strings. Next, we use ldply to separate the contents of the list into a matrix. Finally, we name and classify the columns based on the figures the numbers represent. 
+```{r dataset1-dataframe}
+#Transform strings into a dataframe
+stop_frisk_data %<>%
+  str_extract_all(pattern="([0-9]){4}|([0-9])+(?= percent)|([0-9]+,[0-9]+)") %>% #extract all years, numbers, and percentages from the strings
+  ldply(rbind) %>% #transform the list into a matrix
+  rename(c("1"="year","2"="tot_stop","3"="tot_innocent","4"="pct_innocent","5"="tot_black","6"="pct_black","7"="tot_latino","8"="pct_latino","9"="tot_white","10"="pct_white","11"="tot_14-24","12"="pct_14-24"))
+
+#Change data types of totals and percentages to numeric
+for (i in 2:12){
+  stop_frisk_data[,i] %<>%
+  str_replace("[[:punct:]]" , "")
+  stop_frisk_data[,i] = as.numeric(as.character(stop_frisk_data[,i]))
+}
+datatable(stop_frisk_data,options = list(scrollX = TRUE))
+```
+
+### Transform Dataframe into Long Format
+To be able to analyze NYPD stops by race, we can subset the dataframe and then transform it into long format.
+```{r dataset1-long}
+#Subset of NYPD stops by race totals
+totals_frisk_long <- stop_frisk_data %>% 
+  select(c(1,5,7,9)) %>% #subset dataframe
+  gather("race", "total", 2:4) #transform into long format
+datatable(totals_frisk_long)
+
+#Subset of NYPD stops by race percentages
+pct_frisk_long <- stop_frisk_data %>% 
+  select(c(1,6,8,10)) %>% #subset dataframe
+  gather("race", "pct", 2:4) #transform into long format
+datatable(pct_frisk_long)
+```
+
+### Analyze Stop-and-Frisk Statistics {.tabset .tabset-fade}
+Now that we were able to tidy the HTML strings into a dataframe, we can plot summaries of the data. 
+
+#### NYPD Stops by Year 
+This table shows that stop-and-frisk started in 2002 and reached its peak in 2011. Although numbers dropped off significantly, the practice still exists.
+```{r dataset1-year}
+ggplot(stop_frisk_data, aes(year, tot_stop)) + geom_bar(stat = "identity") + labs(title =" NYPD Stops by Year", x = "Year") + scale_y_continuous(name = "Total Stops", breaks = seq(0,700000,50000))
+```
+
+#### Annual NYPD Stops by Race
+```{r dataset1-race, warning=FALSE}
+ggplot(totals_frisk_long, aes(year, total)) + geom_bar(stat = "identity", aes(fill = race)) + labs(title =" Annual NYPD Stops by Race", x = "Year") + scale_y_continuous(name = "Total Stops", breaks = seq(0,700000,50000))
+```
+
+###
