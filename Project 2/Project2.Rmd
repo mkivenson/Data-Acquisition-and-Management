@@ -34,6 +34,22 @@ This project will tidy the following datasets to analyze stop-and-frisk data, de
 * [NYC Demographic Wide Data from the 2010 Census](https://www1.nyc.gov/site/planning/data-maps/nyc-population/census-2010.page)  
 * [Annual Crime in Large Local Agencies Wide Data](https://www.ucrdatatool.gov/Search/Crime/Local/TrendsInOneVarStepTwoLarge.cfm)  
 
+The following packages will be used:
+
+* library(stringr)
+* library(dplyr)
+* library(plyr)
+* library(magrittr)
+* library(DT)
+* library(tidyr)
+* library(ggplot2)
+* library(zoo)
+* library(janitor)
+* library(gganimate)
+* library(gifski)
+* library(png)
+* library(gridExtra)
+* library(RColorBrewer)
 
 ## Dataset 1: Stop and Frisk Data
 The ACLU provides annual [Stop and Frisk Data](https://www.nyclu.org/en/stop-and-frisk-data) that summarizes NYPD stops by year, outcome, race, and age. The code below extracts the ACLU html webpage as a string, then uses regular expressions to extract only the report summary (excluding other html on the page, such as links and charts). Finally, ldply is used to split the list by element and to create a dataframe.
@@ -114,6 +130,9 @@ ggplot(totals_frisk_long, aes(year, total)) + geom_bar(stat = "identity", aes(fi
 
 ## Dataset 2: NYC 2010 Demographics
 The 2010 Census provides a demographic profile showing population and housing information in a long data format.
+
+### Import Data
+The first step is to import the NYC demographics data as a csv file. 
 ```{r dataset2-import, warning=FALSE}
 nyc_demographic <- read.csv(file = "https://github.com/mkivenson/Data-Acquisition-and-Management/raw/master/Project%202/NYCDemographics.csv", skip = 7, header = FALSE) 
 datatable(nyc_demographic,options = list(scrollX = TRUE))
