@@ -1,11 +1,14 @@
 ---
-title: "Does Stop-and-Frisk Affect Crime Rates?"
+title: "Project 2: NYC & Crime"
 author: "Mary Anna Kivenson"
-date: "3/9/2019"
+date: "2/25/2019"
 output:
   html_document:
+    highlight: pygments
+    theme: united
     toc: yes
     toc_float: yes
+
 ---
 
 ```{r setup, include=FALSE}
@@ -17,15 +20,22 @@ library(magrittr)
 library(DT)
 library(tidyr)
 library(ggplot2)
+library(zoo)
+library(janitor)
+library(gganimate)
+library(gifski)
+library(png)
+library(gridExtra)
+library(RColorBrewer)
 ```
 This project will tidy the following datasets to analyze stop-and-frisk data, demographics information, and crime rates in New York City and in the United States:  
 
 * [Stop and Frisk HTML Data from the ACLU](https://www.nyclu.org/en/stop-and-frisk-data)  
-* [NYC Demographic Long Data from the 2010 Census](https://www1.nyc.gov/assets/planning/download/office/data-maps/nyc-population/census2010/t_sf1_dp_nyc.xlsx)  
+* [NYC Demographic Wide Data from the 2010 Census](https://www1.nyc.gov/site/planning/data-maps/nyc-population/census-2010.page)  
 * [Annual Crime in Large Local Agencies Wide Data](https://www.ucrdatatool.gov/Search/Crime/Local/TrendsInOneVarStepTwoLarge.cfm)  
 
 
-## Importing Stop and Frisk Data
+## Dataset 1: Stop and Frisk Data
 The ACLU provides annual [Stop and Frisk Data](https://www.nyclu.org/en/stop-and-frisk-data) that summarizes NYPD stops by year, outcome, race, and age. The code below extracts the ACLU html webpage as a string, then uses regular expressions to extract only the report summary (excluding other html on the page, such as links and charts). Finally, ldply is used to split the list by element and to create a dataframe.
 
 
@@ -57,9 +67,9 @@ To transform a list of strings into a dataframe, we first use regular expression
 ```{r dataset1-dataframe}
 #Transform strings into a dataframe
 stop_frisk_data %<>%
-  str_extract_all(pattern="([0-9]){4}|([0-9])+(?= percent)|([0-9]+,[0-9]+)") %>% #extract all years, numbers, and percentages from the strings
+  str_extract_all(pattern="([0-9]){4}|([0-9])+(?= percent)|([0-9]+.[0-9]+)") %>% #extract all years, numbers, and percentages from the strings
   ldply(rbind) %>% #transform the list into a matrix
-  rename(c("1"="year","2"="tot_stop","3"="tot_innocent","4"="pct_innocent","5"="tot_black","6"="pct_black","7"="tot_latino","8"="pct_latino","9"="tot_white","10"="pct_white","11"="tot_14-24","12"="pct_14-24"))
+  rename(c("1"="year","2"="tot_stop","3"="tot_innocent","4"="pct_innocent","5"="tot_black","6"="pct_black","7"="tot_hispanic","8"="pct_hispanic","9"="tot_white","10"="pct_white","11"="tot_14-24","12"="pct_14-24"))
 
 #Change data types of totals and percentages to numeric
 for (i in 2:12){
@@ -71,7 +81,7 @@ datatable(stop_frisk_data,options = list(scrollX = TRUE))
 ```
 
 ### Transform Dataframe into Long Format
-To be able to analyze NYPD stops by race, we can subset the dataframe and then transform it into long format.
+To be able to analyze NYPD stops by race, we can subset the dataframe and then transform it into long format using the gather function.
 ```{r dataset1-long}
 #Subset of NYPD stops by race totals
 totals_frisk_long <- stop_frisk_data %>% 
@@ -100,4 +110,205 @@ ggplot(stop_frisk_data, aes(year, tot_stop)) + geom_bar(stat = "identity") + lab
 ggplot(totals_frisk_long, aes(year, total)) + geom_bar(stat = "identity", aes(fill = race)) + labs(title =" Annual NYPD Stops by Race", x = "Year") + scale_y_continuous(name = "Total Stops", breaks = seq(0,700000,50000))
 ```
 
-###
+
+
+## Dataset 2: NYC 2010 Demographics
+The 2010 Census provides a demographic profile showing population and housing information in a long data format.
+```{r dataset2-import, warning=FALSE}
+nyc_demographic <- read.csv(file = "https://github.com/mkivenson/Data-Acquisition-and-Management/raw/master/Project%202/NYCDemographics.csv", skip = 7, header = FALSE) 
+datatable(nyc_demographic,options = list(scrollX = TRUE))
+```
+
+### Tidy Demographics Dataframe
+The original dataset needs to be tidied, which involves: renaming columns, removing empty rows, changing datatypes, populating empty column values, and removing unneeded data.
+```{r dataset2-tidy, warning=FALSE}
+nyc_demographic %<>%
+  rename(c("V1"="Type","V2"="Borough","V3"="tot_pop","V4"="tot_white","V5"="tot_black","V6"="tot_AI/AN","V7"="tot_asian","V8"="tot_NH/PI","V9"="tot_other","V10"="tot_two","V11"="tot_hispanic")) #rename columns
+
+nyc_demographic <- nyc_demographic[!apply(nyc_demographic == "", 1, all),] #remove empty rows
+
+#Change data types of totals and percentages to numeric
+for (i in 3:11){
+  nyc_demographic[,i] %<>%
+  str_replace_all("," , "")
+  nyc_demographic[,i] = as.numeric(as.character(nyc_demographic[,i]))
+}
+
+#Populate Type column
+nyc_demographic$Type[nyc_demographic$Type == ""] <- NA #replace empty values in the type column with NA values
+nyc_demographic$Type <- na.locf(nyc_demographic$Type) #fill NA values from the type column with the previous valid value
+nyc_demographic <- nyc_demographic[!(nyc_demographic$Borough==""), ] #remove rows without a borough
+```
+
+### Transform Demographics Dataframe
+The next step is to transform the dataset by deleting total population row and columns (we can plot the totals as the sum of subtotals). 
+
+**Subset of NYC Demographics: Totals**
+```{r dataset2-transform1, warning=FALSE}
+totals_nyc_long <- nyc_demographic %>% 
+  filter(tot_pop > 100) %>% #filter for counts only (remove percentages)
+  select(c(-3)) %>% #subset dataframe - remove total population column
+  subset(Type != "Total Population:") %>% #subset dataframe - remove total population rows
+  gather("race", "total", 3:10) #transform into long format
+datatable(totals_nyc_long)
+```
+
+**Subset of NYC Demographics: Percentages**
+```{r dataset2-transform2, warning=FALSE}
+pct_nyc_long <- nyc_demographic %>% 
+  filter(tot_pop < 100) %>% #filter for percentages only (remove counts)
+  select(c(-3)) %>% #subset dataframe - remove total population column
+  subset(Type != "Total Population:") %>% #subset dataframe - remove total population rows
+  gather("race", "pct", 3:10) #transform into long format
+datatable(pct_nyc_long)
+```
+
+### Analyze NYC Demographics {.tabset .tabset-fade}
+Now that we were able to tidy the semi-structured data into a long dataframe, we can plot summaries of the data. 
+
+#### Race
+This table shows an overview of the overall NYC population by race. 
+```{r dataset2-overview}
+totals_nyc_long2 <- totals_nyc_long %>% 
+  filter(Borough != "New York City")
+ggplot(totals_nyc_long2, aes(race, total)) + geom_bar(stat = "identity", aes(fill = race)) + labs(title ="NYC population by Race", x = "Race") + scale_y_continuous(breaks = seq(0,3000000,500000)) + guides(fill = "none")
+```
+
+
+#### Age
+This table shows an overview of the overall NYC population by race, broken down by age (over 18 and under 18). 
+```{r dataset2-agerace}
+ggplot(totals_nyc_long2, aes(race, total)) + geom_bar(stat = "identity", aes(fill = Type)) + facet_grid(.~Type) + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(title ="NYC population by Age and Race", x = "Race") + guides(fill = "none")
+```
+
+
+#### Borough
+This table shows an overview of the overall NYC population by borough and race. 
+```{r dataset2-ageborough}
+ggplot(totals_nyc_long2, aes(Borough, total)) + geom_bar(stat = "identity", aes(fill = race))  + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(title ="NYC population by Borough and Race", x = "Borough")
+```
+
+
+
+#### Stop-and-Frisk
+
+An important question these two datasets can answer is **are certain races targeted for NYPD stops more than others?**
+We can merge the NYC race demographics and the stop-and-frisk datasets to answer this question. From the table created below, it is clear that NYPD stop-and-frisk predominately targets black people (26.9% of the population accounts for 56.22% of the stops). A chi-square test can be used to confirm this statement, but there is already [ample evidence and testing that stop-and-frisk is racially biased](http://www.stat.columbia.edu/~gelman/research/published/frisk9.pdf). 
+
+```{r dataset2-frisk, warning=FALSE}
+pop <- aggregate(totals_nyc_long$total, list(totals_nyc_long$race), sum) #NYC residents by race
+na.sum <- function(x){
+  sum(na.omit(x))}
+frisk <- aggregate(totals_frisk_long$total, list(totals_frisk_long$race), na.sum) #Total NYPD stops by race
+merged <- merge(pop,frisk,by="Group.1") #merge population demographics and stop-and-frisk data
+merged <- rename(merged, c("Group.1"="Race","x.x"="Population_2010","x.y"="NYPD_Stops_2003_to_2018")) #rename columns
+
+#create proptable of total NYPD stops to total population by race
+merged.prop <- as.data.frame(prop.table(as.matrix(merged[2:3]), margin=2))
+merged.prop <- cbind(Race = c("black","hispanic","white"), merged.prop)
+datatable(merged.prop)
+```
+
+
+
+## Dataset 3: Annual Crime Data
+The U.S. Department of Justice has a data tool that generates wide datatables based on selected variables and groups. The following datatable was generated by selecting all city police departments with populations of over 1,000,000 for years 2002 - 2014. This data range was selected because 2002 is the year in which the stop-and-frisk practice began, and 2014 is the latest year for which data is available. 
+
+
+### Import Property Crime Data
+The datatable below is a wide csv datatable showing property crime rates by city and year. Rates are the the number of reported offenses per 100,000 population.
+
+```{r dataset3a-import, warning=FALSE}
+property <- read.csv(file="https://github.com/mkivenson/Data-Acquisition-and-Management/raw/master/Project%202/CityPropertyCrime.csv")
+datatable(property, options = list(scrollX = TRUE))
+```
+
+### Transform Property Crime Data
+The datatable below is a wide csv datatable showing property crime rates by city and year. Rates are the the number of reported offenses per 100,000 population.
+
+```{r dataset3a-long}
+#Use gather to transform from wide datatable to long datatable
+property <- property %>% 
+  select(-16) %>% #remove the last column - it is empty and should not be included
+  gather("Year", "Total", 3:15)  #transform into long format
+property$Year <- str_replace(property$Year, pattern = "X",replacement = "")
+datatable(property, options = list(scrollX = TRUE))
+```
+
+
+### Import Violent Crime Data
+The datatable below is a wide csv datatable showing violent crime rates by city and year. Rates are the the number of reported offenses per 100,000 population.
+
+```{r dataset3b-import, warning=FALSE}
+violent <- read.csv(file="https://github.com/mkivenson/Data-Acquisition-and-Management/raw/master/Project%202/CityViolentCrime.csv")
+datatable(violent, options = list(scrollX = TRUE))
+```
+
+### Transform Violent Crime Data
+The datatable below is a wide csv datatable showing violent crime rates by city and year. Rates are the number of reported offenses per 100,000 population.
+
+```{r dataset3b-long}
+#Use gather to transform from wide datatable to long datatable
+violent <- violent %>% 
+  select(-16) %>% #remove the last column - it is empty and should not be included
+  gather("Year", "Total", 3:15)  #transform into long format
+violent$Year <- str_replace(violent$Year, pattern = "X",replacement = "")
+datatable(violent, options = list(scrollX = TRUE))
+```
+
+### Merge Crime Data
+Now that we have long data tables for both violent and property crime data, we should merge the two datasets.
+```{r dataset3ab-combine}
+#Add a field indicating the type of crime
+violent$Crime <- "violent"
+property$Crime <- "property"
+#Create a new empty dataframe for the merged violent and property data
+crimes = data.frame(matrix(vector(), 286, 5,
+                dimnames=list(c(), c("Agency", "State", "Year", "Total", "Crime"))),
+                stringsAsFactors=F)
+
+#Append violent crime data to property crime data
+for(i in 1:5){
+crimes[i] <- bind_rows(violent[i], property[i])
+}
+crimes$Agency <- str_replace_all(crimes$Agency, pattern = "(.Police Dept)|(.Metropolitan Police Department)",replacement = "")
+crimes$Year <- as.integer(crimes$Year)
+datatable(crimes, options = list(scrollX = TRUE))
+```
+
+
+### Analyze Crime Data  {.tabset .tabset-fade}
+
+In the previous steps, we used tidyr and dplyr to tidy, transform, and combine two wide datasets. Now, we use ggplot2 to analyze and plot the structured dataframe.
+
+#### Overview
+The overview below shows annual crime rates for each city by crime type. Out of all the cities, New York City seems to have a comparitively low rate of change (possible because it already has the lowest crime rates out of all the cities). On the other hand, Dallas and Phoenix see significant decreases in crime over time. The general trend for most of these cities cities is a gradually decreasing crime rate. 
+```{r dataset3ab-overview}
+ggplot(crimes, aes(Year, Total)) + geom_bar(stat = "identity", aes(fill = Crime)) + facet_wrap(.~Agency) + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(title = "Annual Crime by Agency") 
+```
+
+
+#### Overview - Animation
+The following plot was created using the gganimate extension for ggplot2. It illustrates change in crime rates for each agency over time. 
+```{r dataset3ab-animate, message=FALSE, warning=FALSE}
+c <- ggplot(crimes, aes(Agency, Total)) + geom_bar(stat = "identity", aes(fill = Crime)) + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + transition_time(Year) + ease_aes('linear') + labs(title = "{frame_time} Crime by Agency", x = "Agency") 
+animate(c)
+```
+
+#### Crime Comparison
+Stop-and-frisk policies were extremely biased and resulted in lasting repercussions. Despite this, advocates for the practice claim that it was successful in reducing crime. **We look at the crime statistics for NYC compared to other major cities over the same timeframe to see if these claims are accurate.**  
+Looking at the plot below, we see that the change in NYC crime rates is comparable to changes in other cities over the same time period. In fact, NYC crime rate seems to decrease at a slower rate than most other cities; for example, Dallas and Phoenix saw a much more drastic decrease in crime than New York City did. Other research has also confirmed that [stop-and-frisk had no impact on crime in New York City](https://www.scribd.com/document/326789746/Fact-Sheet-Stop-and-Frisk-s-Effect-on-Crime-in-New-York-City). 
+```{r dataset3ab-frisk}
+#nyc crime rate over time (not plotted)
+nyc <- ggplot(subset(crimes,Agency %in% "New York City")) + 
+  geom_line(aes(Year, Total)) + 
+  labs(title = "NYC Crime Rates over Time", x = "Year") 
+
+#crime rates for all cities over time
+byagency <- ggplot(crimes) + 
+  geom_line(aes(Year, Total, color=Agency)) + 
+  labs(title = "Crime Rates by City", x = "Year") +
+  scale_color_brewer(palette="Set3") + theme_dark()
+#to plot charts together: grid.arrange(nyc, byagency, nrow = 1)
+byagency
+```
