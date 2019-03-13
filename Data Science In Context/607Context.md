@@ -1,0 +1,44 @@
+Graphs, Centrality, and Gephi
+========================================================
+author: Mary Anna Kivenson
+date: March 10, 2019
+autosize: true
+
+Agenda
+========================================================
+
+Gephi <https://gephi.org/>.
+
+- Gephi Overview
+- Project Example in Gephi
+- Gephi Package
+
+Gephi Overview
+========================================================
+
+- Exploratory Data Analysis
+- Social Network Analysis
+- Centrality Metrics (degree, betweenness, closeness)
+
+Centrality Measures
+========================================================
+
+Degree Centrality: A node is important if it is linked to many other nodes.
+
+Betweenness Centrality: A node is important if it is in the shortest path between many other nodes. 
+
+Closeness Centrality: A node is important if it has a short path from many other nodes.
+
+Eigenvalue Centrality: A node is important if it is connected to other important nodes.
+
+
+Centrality Measures of Internal Migration
+========================================================
+
+Presentation <https://github.com/mkivenson/Data-Acquisition-and-Management/raw/master/Data%20Science%20In%20Context/Thesis_Presentation.pdf>
+
+
+Gephi Library
+========================================================
+Gephi in R
+Library: rgexf <https://cran.r-project.org/web/packages/rgexf/rgexf.pdf>
