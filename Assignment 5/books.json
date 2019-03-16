@@ -1,0 +1,20 @@
+{"books":[
+  {"title":"Automated Data Collection with R: A Practical Guide to Web Scraping and Text Mining",
+  "author":"Simon Munzert, Christian Rubba, Peter Meißner, and Dominic Nyhuis",
+  "year_published":"2015",
+  "publisher":"Wiley",
+  "page_length":"474"
+  },
+  {"title":"R for Data Scienc",
+  "author":"Garrett Grolemund and Hadley Wickham",
+  "year_published":"2017",
+  "publisher":"O’Reilly",
+  "page_length":"608"
+  },
+  {"title":"Data Science for Business",
+  "author":"Tom Fawcett and Foster Provost",
+  "year_published":"2013",
+  "publisher":"O’Reilly",
+  "page_length":"414"
+  },
+]}
