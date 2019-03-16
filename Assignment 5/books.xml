@@ -2,7 +2,7 @@
 <books> 
    <book> 
        <title>Automated Data Collection with R: A Practical Guide to Web Scraping and Text Mining</title> 
-       <author>Simon Munzert, Christian Rubba, Peter Meißner, and Dominic Nyhuis</author> 
+       <author>Simon Munzert, Christian Rubba, Peter Meibner, and Dominic Nyhuis</author> 
        <year_published>2015</year_published> 
        <publisher>Wiley</publisher> 
        <page_length>474</page_length>  </book> 
