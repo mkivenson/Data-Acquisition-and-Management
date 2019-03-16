@@ -6,8 +6,6 @@ output:
   html_document:
     highlight: pygments
     theme: united
-    toc: yes
-    toc_float: yes
   pdf_document: default
 ---
 
@@ -15,11 +13,14 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+The goal of this assignment is to create and import HTML, XML, and JSON files into R. 
+
 ## Load Packages
 ```{r packages, message=FALSE, warning=FALSE}
 library(XML) #for readHTMLTable, xmlTreeParse, and xmlSApply
 library(RCurl) #for getURL function
 library(rjson) #for fromJSON function
+library(jsonlite) #for fromJSON function
 library(DT) #for datatables
 library(tidyr) #for data wrangling
 library(dplyr) #for data wrangling
@@ -50,7 +51,7 @@ datatable(books_html)
 ```{r xml, warning=FALSE}
 books_xml <- xmlTreeParse(getURL("https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Assignment%205/books.xml"))
 books_xml <- xmlSApply(books_xml,function(x) xmlSApply(x, xmlValue))
-books_xml <- data.frame(t(books_xml), row.names=NULL)
+books_xml <- as.data.frame(t(books_xml), row.names=NULL)
 datatable(books_xml)
 ```
 
@@ -65,18 +66,24 @@ datatable(books_xml)
 ```
 
 
-## JSON
+## JSON   {.tabset .tabset-fade}
 
-### Import
+### Import 
 
 ```{r json, warning=FALSE}
-books_json <- fromJSON(file = "books.json")
-books_json <- as.data.frame(books_json)
+books_json <- as.data.frame(fromJSON(getURL("https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Assignment%205/books.json")))
 datatable(books_json)
 ```
 
-
+### Tidy
+```{r json_long, message=FALSE, warning=FALSE}
+books_json %<>%
+  separate(books.author,c("author1","author2","author3","author4"), sep = ",") %>%
+  gather("id","author",2:5) %>%
+  na.omit()  %>%
+  arrange(books.title)
+datatable(books_json)
+```
 
 ## Takeaway
-
-The HTML, XML, and JSON formats are nearly identical once imported into R. The main distinction is that the json format allowed the multiple authors to be entered as a vector, so the fromJSON function imported the data in long format. 
+The HTML, XML, and JSON formats are nearly identical once imported as into R as dataframes. One distinction is that for the XML dataframe, the columns are named based on the item name.
