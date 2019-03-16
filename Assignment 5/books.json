@@ -5,7 +5,7 @@
   "publisher":"Wiley",
   "page_length":"474"
   },
-  {"title":"R for Data Scienc",
+  {"title":"R for Data Science",
   "author":"Garrett Grolemund, Hadley Wickham",
   "year_published":"2017",
   "publisher":"O’Reilly",
@@ -14,7 +14,7 @@
   {"title":"Data Science for Business",
   "author":"Tom Fawcett, Foster Provost",
   "year_published":"2013",
-  "publisher":"O Reilly",
+  "publisher":"O’Reilly",
   "page_length":"414"
   }
 ]}
