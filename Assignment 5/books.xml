@@ -2,20 +2,20 @@
 <books> 
    <book> 
        <title>Automated Data Collection with R: A Practical Guide to Web Scraping and Text Mining</title> 
-       <author>Simon Munzert, Christian Rubba, Peter Meibner, and Dominic Nyhuis</author> 
+       <author>Simon Munzert, Christian Rubba, Peter Meibner, Dominic Nyhuis</author> 
        <year_published>2015</year_published> 
        <publisher>Wiley</publisher> 
        <page_length>474</page_length>  </book> 
    <book> 
        <title>R for Data Science</title> 
-       <author>Garrett Grolemund and Hadley Wickham</author> 
+       <author>Garrett Grolemund, Hadley Wickham</author> 
        <year_published>2017</year_published> 
        <publisher>O’Reilly</publisher> 
        <page_length>608</page_length>  </book> 
    <book> 
        <title>Data Science for Business</title> 
-       <author>Tom Fawcett and Foster Provost</author> 
+       <author>Tom Fawcett, Foster Provost</author> 
        <year_published>2013</year_published> 
-       <publisher>O Reilly</publisher> 
+       <publisher>O'Reilly</publisher> 
        <page_length>414</page_length>  </book> 
 </books>
