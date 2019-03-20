@@ -1,0 +1,203 @@
+---
+title: "Project 3"
+author: "Mary Anna Kivenson"
+date: "3/17/2019"
+output:
+  html_document:
+    highlight: pygments
+    theme: united
+    css: styles.css
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library, include=FALSE}
+library(rvest)
+library(tidyverse)
+library(data.table)
+library(DT)
+library(magrittr)
+library(digest)
+library(RPostgreSQL)
+library(tidytext)
+```
+
+## Using Indeed Data to Determine Valuable Data Science Skills
+
+### Web Scraping Indeed Job Search Pages 
+To obtain the latest available information about data science job postings, 50 pages of the latest Indeed job postings are scraped using various html nodes in the rvest package. The resulting dataset contains the following fields: job title, company, location, job summary, and link. To identify the correct html nodes that return these fields, the chrome extention *SelectorGadget* was used in conjunction with *inspect element*. Regular expressions are also used for each field to remove blank spaces, new lines, and unnecessary information.
+
+```{r job-summaries, eval=TRUE, include=TRUE}
+listings <- data.frame(title=character(),
+                 company=character(), 
+                 location=character(), 
+                 summary=character(), 
+                 link=character(), 
+                 description = character(),
+                 stringsAsFactors=FALSE) 
+
+for (i in seq(0, 1000, 10)){
+  url_ds <- paste0('https://www.indeed.com/jobs?q=data+scientist&l=all&start=',i)
+  var <- read_html(url_ds)
+  
+  #job title
+  title <-  var %>% 
+    html_nodes('#resultsCol .jobtitle') %>%
+    html_text() %>%
+    str_extract("(\\w+.+)+") 
+  
+  #company
+  company <- var %>% 
+    html_nodes('#resultsCol .company') %>%
+    html_text() %>%
+    str_extract("(\\w+).+") 
+  
+  #location
+  location <- var %>%
+    html_nodes('#resultsCol .location') %>%
+    html_text() %>%
+    str_extract("(\\w+.)+,.[A-Z]{2}")   
+
+  #summary
+  summary <- var %>%
+    html_nodes('#resultsCol .summary') %>%
+    html_text() %>%
+    str_extract(".+")
+  
+  #link
+  link <- var %>%
+    html_nodes('#resultsCol .jobtitle .turnstileLink, #resultsCol a.jobtitle') %>%
+    html_attr('href') 
+  link <- paste0("https://www.indeed.com",link)
+
+    
+  listings <- rbind(listings, as.data.frame(cbind(title,
+                                                  company,
+                                                  location,
+                                                  summary,
+                                                  link)))
+}
+```
+
+We have successfully scraped job title, company, location, job summary, and job link from 100 pages of Indeed job postings.
+
+```{r dataframe}
+datatable(listings)
+```
+
+### Creating a Unique ID for Each Job Listing
+
+We create a unique ID for each listing based on title, location, company, summary, and description. This unique ID will be used to remove duplicates (since many sponsored posts show up multiple times in Indeed's postings).
+
+```{r deduplicate}
+#create a unique id for each job posting attribute combination
+listings$uniqueid <- mapply(function(w, x, y, z) digest(paste0(w,x,y,z)), listings$title, listings$location, listings$company, listings$summary)
+
+#remove duplicate unique ids
+listings %<>%
+  distinct(uniqueid, .keep_all = TRUE)
+datatable(listings)
+```
+
+### Scraping Individual Listings for Full Descriptions
+The summaries provided in the main job listing pages are somewhat limited. Links to each individual job posting were also extracted in the previous step, so it is possible to iterate theough each link and scrape the full job description. To do this, duplicates are removed and rvest is used again to extract full descriptions.
+
+```{r crawl, eval=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+#obtain full description for all job postings
+for (i in (1:length(listings$link))){
+  listings$description[i] <- tryCatch(
+     html_text(html_nodes(read_html(as.character(listings$link[i])),'.icl-u-xs-mt--md')),
+     error=function(e){NA}
+  )
+  
+}
+```
+
+```{r crawl-results}
+datatable(listings)
+```
+
+
+### Store Job Listings in SQL Server 
+
+Now that full job descriptions are available, regular expressions are used for some minor cleanup. Finally, we store the information from the web scraping in an SQL server. Rather than deleting the SQL table everytime this code chunk is run, we append the new listing to the existing SQL server. This allows any additional job listings to be captured without deleting older job listings. To prevent capturing duplicates in the SQL database, we use uniqueid as the primary key and only append listings with distinct unique IDs.
+
+```{r showlistings, eval=FALSE, message=FALSE, warning=FALSE, include=TRUE, paged.print=TRUE}
+#Minor clean-up
+listings$description <- str_extract(listings$description,".+") 
+
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, user='postgres', password='password', dbname='indeed', host='host')
+
+#Query to create new SQL table using uniqueid as the primary key
+sqltable <- "CREATE TABLE listings (
+ title TEXT,
+ company TEXT,
+ location TEXT,
+ summary TEXT,
+ link TEXT,
+ description TEXT,
+ uniqueid TEXT PRIMARY KEY
+)"
+
+#Creates new SQL table "listings" using the query above if it does not exist yet 
+if (!dbExistsTable(con, "listings")){
+  dbExecute(con, sqltable)
+}
+
+#Instead of dropping the table and creating a new one, we append records. Setting uniqueID as the primary key prevents us from appending duplicate job postings to the SQL database. This requires us to append a subset of job listings that are not duplicates. To do this, we import all uniqueid values from SQL and subset listings to exclude duplicates - then import into SQL.
+dupcheck <- "SELECT uniqueid FROM listings"
+dupcheck_results <- dbGetQuery(con, dupcheck)
+dbWriteTable(con, "listings", subset(listings, !(uniqueid %in% dupcheck_results$uniqueid)), append = TRUE, row.names = FALSE)
+
+#Query to all job listings from SQL database.
+sql <- " 
+    SELECT uniqueid, title, company, location, summary, link, description
+    FROM listings
+"
+
+#Show query results
+results <- dbGetQuery(con, sql)
+dbDisconnect(con)
+datatable(results)
+```
+
+```{r hidden, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, user='postgres', password='kusya5341', dbname='indeed', host='localhost')
+
+#Query to create new SQL table using uniqueid as the primary key
+sqltable <- "CREATE TABLE listings (
+ title TEXT,
+ company TEXT,
+ location TEXT,
+ summary TEXT,
+ link TEXT,
+ description TEXT,
+ uniqueid TEXT PRIMARY KEY
+)"
+
+#Creates new SQL table "listings" using the query above if it does not exist yet 
+if (!dbExistsTable(con, "listings")){
+  dbExecute(con, sqltable)
+}
+
+#Instead of dropping the table and creating a new one, we append records. Setting uniqueID as the primary key prevents us from appending duplicate job postings to the SQL database. This requires us to append a subset of job listings that are not duplicates. To do this, we import all uniqueid values from SQL and subset listings to exclude duplicates - then import into SQL.
+dupcheck <- "SELECT uniqueid FROM listings"
+dupcheck_results <- dbGetQuery(con, dupcheck)
+dbWriteTable(con, "listings", subset(listings, !(uniqueid %in% dupcheck_results$uniqueid)), append = TRUE, row.names = FALSE)
+
+#Query to all job listings from SQL database.
+sql <- " 
+    SELECT uniqueid, title, company, location, summary, link, description
+    FROM listings
+"
+
+#Show query results
+results <- dbGetQuery(con, sql)
+dbDisconnect(con)
+datatable(results)
+```

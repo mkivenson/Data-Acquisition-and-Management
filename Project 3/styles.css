@@ -1,0 +1,16 @@
+th, td {
+  overflow-wrap: break-word;
+  max-width: 100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+	white-space: nowrap;
+}
+div.dataTables_wrapper {
+    margin: 0 auto;
+}
+div.container {
+    width: 80%;
+}
+tr {
+    max-height: 30px;
+}
