@@ -23,6 +23,7 @@ library(magrittr)
 library(digest)
 library(RPostgreSQL)
 library(tidytext)
+library(config)
 ```
 
 ## Using Indeed Data to Determine Valuable Data Science Skills
@@ -39,7 +40,7 @@ listings <- data.frame(title=character(),
                  description = character(),
                  stringsAsFactors=FALSE) 
 
-for (i in seq(0, 1000, 10)){
+for (i in seq(0, 990, 10)){
   url_ds <- paste0('https://www.indeed.com/jobs?q=data+scientist&l=all&start=',i)
   var <- read_html(url_ds)
   
@@ -112,7 +113,6 @@ for (i in (1:length(listings$link))){
      html_text(html_nodes(read_html(as.character(listings$link[i])),'.icl-u-xs-mt--md')),
      error=function(e){NA}
   )
-  
 }
 ```
 
@@ -125,12 +125,12 @@ datatable(listings)
 
 Now that full job descriptions are available, regular expressions are used for some minor cleanup. Finally, we store the information from the web scraping in an SQL server. Rather than deleting the SQL table everytime this code chunk is run, we append the new listing to the existing SQL server. This allows any additional job listings to be captured without deleting older job listings. To prevent capturing duplicates in the SQL database, we use uniqueid as the primary key and only append listings with distinct unique IDs.
 
-```{r showlistings, eval=FALSE, message=FALSE, warning=FALSE, include=TRUE, paged.print=TRUE}
-#Minor clean-up
-listings$description <- str_extract(listings$description,".+") 
+
+```{r hidden, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+config <- config::get()
 
 drv <- dbDriver("PostgreSQL")
-con <- dbConnect(drv, user='postgres', password='password', dbname='indeed', host='host')
+con <- dbConnect(drv, user=config$user, password=config$password, dbname=config$dbname, host= config$host)
 
 #Query to create new SQL table using uniqueid as the primary key
 sqltable <- "CREATE TABLE listings (
@@ -153,44 +153,7 @@ dupcheck <- "SELECT uniqueid FROM listings"
 dupcheck_results <- dbGetQuery(con, dupcheck)
 dbWriteTable(con, "listings", subset(listings, !(uniqueid %in% dupcheck_results$uniqueid)), append = TRUE, row.names = FALSE)
 
-#Query to all job listings from SQL database.
-sql <- " 
-    SELECT uniqueid, title, company, location, summary, link, description
-    FROM listings
-"
-
-#Show query results
-results <- dbGetQuery(con, sql)
-dbDisconnect(con)
-datatable(results)
-```
-
-```{r hidden, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
-drv <- dbDriver("PostgreSQL")
-con <- dbConnect(drv, user='postgres', password='kusya5341', dbname='indeed', host='localhost')
-
-#Query to create new SQL table using uniqueid as the primary key
-sqltable <- "CREATE TABLE listings (
- title TEXT,
- company TEXT,
- location TEXT,
- summary TEXT,
- link TEXT,
- description TEXT,
- uniqueid TEXT PRIMARY KEY
-)"
-
-#Creates new SQL table "listings" using the query above if it does not exist yet 
-if (!dbExistsTable(con, "listings")){
-  dbExecute(con, sqltable)
-}
-
-#Instead of dropping the table and creating a new one, we append records. Setting uniqueID as the primary key prevents us from appending duplicate job postings to the SQL database. This requires us to append a subset of job listings that are not duplicates. To do this, we import all uniqueid values from SQL and subset listings to exclude duplicates - then import into SQL.
-dupcheck <- "SELECT uniqueid FROM listings"
-dupcheck_results <- dbGetQuery(con, dupcheck)
-dbWriteTable(con, "listings", subset(listings, !(uniqueid %in% dupcheck_results$uniqueid)), append = TRUE, row.names = FALSE)
-
-#Query to all job listings from SQL database.
+#Query to get all job listings from SQL database.
 sql <- " 
     SELECT uniqueid, title, company, location, summary, link, description
     FROM listings
