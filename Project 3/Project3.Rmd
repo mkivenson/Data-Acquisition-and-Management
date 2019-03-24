@@ -494,31 +494,42 @@ res <- rquery.wordcloud(paste(results$description), type="text",
 ```
 
 #### Keyword Search for Languages
-Below we search for occurance rates of specific languages. The majority of job postings mention R, Python, or SQL. Java and Scala are less commonly listed, but also seem to be useful skills for many job listings.
+Below we search for occurance rates of specific languages. The majority of job postings mention R, Python, and/or SQL. Java, C++, and Scala are less commonly listed, but also seem to be useful skills for many job listings.
 
 ```{r indeed_key}
 #R
 r_listings_df <- results %>% 
   filter(grepl(" R | R,", description, ignore.case=T) | grepl(" R | R,", summary, ignore.case=T))
+
 #Python
 python_listings_df <- results %>% 
-  filter(grepl(" python | python,", description, ignore.case=T) | grepl(" python | python,", summary, ignore.case=T))
+  filter(grepl(" python| python,", description, ignore.case=T) | grepl(" python| python,", summary, ignore.case=T))
+
 #Java
 java_listings_df <- results %>% 
-  filter(grepl(" java | java,", description, ignore.case=T) | grepl(" java | java,", summary, ignore.case=T))
+  filter(grepl(" java| java,", description, ignore.case=T) | grepl(" java| java,", summary, ignore.case=T))
+
 #SQL
 SQL_listings_df <- results %>% 
-  filter(grepl(" SQL | SQL,", description, ignore.case=T) | grepl(" SQL | SQL,", summary, ignore.case=T))
+  filter(grepl("SQL| SQL,", description, ignore.case=T) | grepl("SQL| SQL,", summary, ignore.case=T))
+
 #Scala
 scala_listings_df <- results %>% 
-  filter(grepl(" Scala | Scala,", description, ignore.case=T) | grepl(" Scala | Scala,", summary, ignore.case=T))
+  filter(grepl(" Scala| Scala,", description, ignore.case=T) | grepl(" Scala| Scala,", summary, ignore.case=T))
+
+#C++
+Cplusplus_listings_df <- results %>% 
+  filter(grepl("C\\+\\+| C\\+\\+,", description, ignore.case=T) | grepl("C\\+\\+| C\\+\\+,", summary, ignore.case=T))
+
+
 language_pct <- tibble(
-  language = c("R", "Python", "Java", "SQL", "Scala"), 
+  language = c("R", "Python", "Java", "SQL", "Scala","C++"), 
   mention_pct = c(round(nrow(r_listings_df)/nrow(results),digits=2), 
                   round(nrow(python_listings_df)/nrow(results),digits=2), 
                   round(nrow(java_listings_df)/nrow(results),digits=2), 
                   round(nrow(SQL_listings_df)/nrow(results),digits=2), 
-                  round(nrow(scala_listings_df)/nrow(results),digits=2)))
+                  round(nrow(scala_listings_df)/nrow(results),digits=2),
+                  round(nrow(Cplusplus_listings_df)/nrow(results),digits=2)))
 language_pct %>% ggplot(aes(x=language, y=mention_pct)) + 
   geom_bar(stat="identity", position=position_dodge(), fill="steelblue") + 
   labs(x = "Language", y = "Percent Mentioned")
@@ -531,25 +542,142 @@ We also looked into the percent of job postings that mentioned tools such as Tab
 ```{r indeed_key2}
 #Tableau
 tableau_listings_df <- results %>% 
-  filter(grepl(" Tableau | Tableau,", description, ignore.case=T) | grepl(" Tableau | Tableau,", summary, ignore.case=T))
+  filter(grepl("Tableau| Tableau,", description, ignore.case=T) | grepl("Tableau| Tableau,", summary, ignore.case=T))
+
 #Spark
 spark_listings_df <- results %>% 
-  filter(grepl(" spark | spark,", description, ignore.case=T) | grepl(" spark | spark,", summary, ignore.case=T))
+  filter(grepl("spark| spark,", description, ignore.case=T) | grepl("spark| spark,", summary, ignore.case=T))
+
 #Hadoop
 hadoop_listings_df <- results %>% 
-  filter(grepl(" hadoop | hadoop,", description, ignore.case=T) | grepl(" hadoop | hadoop,", summary, ignore.case=T))
+  filter(grepl("hadoop| hadoop,", description, ignore.case=T) | grepl("hadoop| hadoop,", summary, ignore.case=T))
+
 #SAS
 SAS_listings_df <- results %>% 
-  filter(grepl(" sas | sas,", description, ignore.case=T) | grepl(" sas | sas,", summary, ignore.case=T))
+  filter(grepl("sas| sas,", description, ignore.case=T) | grepl("sas| sas,", summary, ignore.case=T))
+
+#AWS
+AWS_listings_df <- results %>% 
+  filter(grepl(" AWS| Amazon Web Services", description, ignore.case=T) | grepl(" AWS| Amazon Web Services", summary, ignore.case=T))
+
+#Azure
+AWS_listings_df <- results %>% 
+  filter(grepl(" AWS| Amazon Web Services", description, ignore.case=T) | grepl(" AWS| Amazon Web Services", summary, ignore.case=T))
+
+#Excel
+Excel_listings_df <- results %>% 
+  filter(grepl(" excel | excel,", description, ignore.case=T) | grepl(" excel | excel,", summary, ignore.case=T))
+
 tools_pct <- tibble(
-  tool = c("Tableau", "Spark", "Hadoop", "SAS"), 
+  tool = c("Tableau", "Spark", "Hadoop", "SAS","Amazon Web Services","Excel"), 
+  
   mention_pct = c(round(nrow(tableau_listings_df)/nrow(results),digits=2), 
                   round(nrow(spark_listings_df)/nrow(results),digits=2), 
                   round(nrow(hadoop_listings_df)/nrow(results),digits=2), 
-                  round(nrow(SAS_listings_df)/nrow(results),digits=2)))
+                  round(nrow(SAS_listings_df)/nrow(results),digits=2),
+                  round(nrow(AWS_listings_df)/nrow(results),digits=2),
+                  round(nrow(Excel_listings_df)/nrow(results),digits=2)))
 tools_pct %>% ggplot(aes(x=tool, y=mention_pct)) + 
   geom_bar(stat="identity", position=position_dodge(), fill="maroon") + 
   labs(x = "Tool", y = "Percent Mentioned")
+```
+
+#### Keyword Search for Technical Topics
+
+
+```{r indeed_key3}
+#Big Data
+bigdata_listings_df <- results %>% 
+  filter(grepl("big data| big data,", description, ignore.case=T) | grepl("big data| big data,", summary, ignore.case=T))
+
+#Cloud
+cloud_listings_df <- results %>% 
+  filter(grepl("cloud| cloud,", description, ignore.case=T) | grepl("cloud| cloud,", summary, ignore.case=T))
+
+#Machine Learning
+ml_listings_df <- results %>% 
+  filter(grepl("machine learning", description, ignore.case=T) | grepl("machine learning", summary, ignore.case=T))
+
+#Regression Analysis
+regr_listings_df <- results %>% 
+  filter(grepl("regression| regression", description, ignore.case=T) | grepl("regression| regression", summary, ignore.case=T))
+
+#Artificial Intelligence
+ai_listings_df <- results %>% 
+  filter(grepl(" AI |Artificial Intelligence", description, ignore.case=T) | grepl(" AI |Artificial Intelligence", summary, ignore.case=T))
+
+#Statistics
+stat_listings_df <- results %>% 
+  filter(grepl("statistic", description, ignore.case=T) | grepl("statistic", summary, ignore.case=T))
+
+#Modeling
+model_listings_df <- results %>% 
+  filter(grepl("model", description, ignore.case=T) | grepl("model", summary, ignore.case=T))
+
+#Visualization
+viz_listings_df <- results %>% 
+  filter(grepl("visual", description, ignore.case=T) | grepl("visual", summary, ignore.case=T))
+
+tools_pct <- tibble(
+  tool = c("Big Data", "Cloud", "Machine Learning", "Regression","AI","Statistics","Modeling","Visualization"), 
+  mention_pct = c(round(nrow(bigdata_listings_df)/nrow(results),digits=2), 
+                  round(nrow(cloud_listings_df)/nrow(results),digits=2), 
+                  round(nrow(ml_listings_df)/nrow(results),digits=2), 
+                  round(nrow(regr_listings_df)/nrow(results),digits=2),
+                  round(nrow(ai_listings_df)/nrow(results),digits=2),
+                  round(nrow(stat_listings_df)/nrow(results),digits=2),
+                  round(nrow(model_listings_df)/nrow(results),digits=2),
+                  round(nrow(viz_listings_df)/nrow(results),digits=2)))
+tools_pct %>% ggplot(aes(x=tool, y=mention_pct)) + 
+  geom_bar(stat="identity", position=position_dodge(), fill="purple") + 
+  labs(x = "Technical Topic", y = "Percent Mentioned")
+```
+
+
+#### Keyword Search for Soft Skills
+Which soft skills are important for data scienctists? We searched the occurance of multiple terms, such as communication, leadership, and problem solving. The key word search indicates that communication, leadership, and presentation skills are necessary for many job postings. Creativity and problem solving are also mentioned in a significant portion of job postings. On the other hand, teamwork seems to be a less valuable skill for data scientists!
+
+```{r indeed_key4}
+#Communication
+communication_listings_df <- results %>% 
+  filter(grepl("communication | communicate", description, ignore.case=T) | grepl("communication | communicate", summary, ignore.case=T))
+
+#Leadership
+leadership_listings_df <- results %>% 
+  filter(grepl("leadership | leader", description, ignore.case=T) | grepl("leadership | leader", summary, ignore.case=T))
+
+#Problem Solving
+problem_listings_df <- results %>% 
+  filter(grepl("problem solv", description, ignore.case=T) | grepl("problem solv", summary, ignore.case=T))
+
+#Presentation
+presentation_listings_df <- results %>% 
+  filter(grepl("present | presentation | public speak", description, ignore.case=T) | grepl("present | presentation | public speak", summary, ignore.case=T))
+
+#Teamwork
+teamwork_listings_df <- results %>% 
+  filter(grepl("teamwork", description, ignore.case=T) | grepl("teamwork", summary, ignore.case=T))
+
+#Adaptability
+adapt_listings_df <- results %>% 
+  filter(grepl("adapt", description, ignore.case=T) | grepl("adapt", summary, ignore.case=T))
+
+#Creativity
+creative_listings_df <- results %>% 
+  filter(grepl("creative | creativity", description, ignore.case=T) | grepl("creative | creativity", summary, ignore.case=T))
+
+tools_pct <- tibble(
+  tool = c("Communication", "Leadership", "Problem Solving", "Presentation","Teamwork","Adaptability","Creativity"), 
+  mention_pct = c(round(nrow(communication_listings_df)/nrow(results),digits=2), 
+                  round(nrow(leadership_listings_df)/nrow(results),digits=2), 
+                  round(nrow(problem_listings_df)/nrow(results),digits=2), 
+                  round(nrow(presentation_listings_df)/nrow(results),digits=2),
+                  round(nrow(teamwork_listings_df)/nrow(results),digits=2),
+                  round(nrow(adapt_listings_df)/nrow(results),digits=2),
+                  round(nrow(creative_listings_df)/nrow(results),digits=2)))
+tools_pct %>% ggplot(aes(x=tool, y=mention_pct)) + 
+  geom_bar(stat="identity", position=position_dodge(), fill="green") + 
+  labs(x = "Soft Skill", y = "Percent Mentioned")
 ```
 
 #### Number of Jobs by Location
