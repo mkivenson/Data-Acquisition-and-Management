@@ -332,7 +332,7 @@ datatable(listings)
 Now that full job descriptions are available, regular expressions are used for some minor cleanup. Finally, we store the information from the web scraping in an SQL server. Rather than deleting the SQL table everytime this code chunk is run, we append the new listings to the existing SQL server. This allows any additional job listings to be captured without deleting older job listings. To prevent capturing duplicates in the SQL database, we use a temporary SQL table to identify which listings are not in the database already.
 
 
-```{r sqlimport, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r sqlimport, eval=FALSE, message=FALSE, warning=FALSE, include=TRUE, paged.print=TRUE}
 config <- config::get()
 
 drv <- dbDriver("PostgreSQL")
@@ -383,6 +383,8 @@ dbDisconnect(con)
 This step imports all the unique data science job listings that we have saved in a SQL table. 
 
 ```{r query, warning=FALSE}
+config <- config::get()
+
 drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv, user=config$user, password=config$password, dbname=config$dbname, host= config$host)
 #Query to get all job listings from SQL database.
@@ -698,9 +700,9 @@ head(locations.city[order(locations.city$Freq,decreasing = TRUE),],10)
 head(locations.state[order(locations.state$Freq,decreasing = TRUE),],10)
 ```
 
-We see states with the highest amount of data science jobs are New York, California, and the District of Columbia. This is expected, but it is also interesting to see that North Carolina, Ohio, and Vermont are have high frequencies of data science jobs.
+We see states with the highest amount of data science jobs are New York and California.
 
-Looking at data science jobs by city, it is evident that New York/Manhattan are a hub for data scientists. However, Rensselaer also ranks highly in terms of quantity data science Jobs. Surprisingly, San Francisco is low on the list of data science job availability. 
+Looking at data science jobs by city, it is evident that New York/Manhattan and San Francisco are a hub for data scientists.
 
 
 ##Conclusion
@@ -710,5 +712,7 @@ Our examination of the data science job market involved us gathering and cleanin
 1. Salaries tend to be higher for data jobs than non-data jobs.  
 2. The New York, California, and DC areas are popular bases for data science opportunities.  
 3. Coveted data science skills include Python, R, SQL, Spark and Hadoop, among others.
+4. High-ranking data science tops include Machine Learning, Statistics, and Modeling.
+5. Important soft skills for data scientists are communication and leadership abilities. 
 
 Future analysis of interest might delve into various trends of popularity. Overall, the current landscape appears bright for data scientists.
