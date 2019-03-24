@@ -554,7 +554,7 @@ tools_pct %>% ggplot(aes(x=tool, y=mention_pct)) +
 
 #### Number of Jobs by Location
 
-We thought it might be interesting to see the frequency of jobs by location. We wanted to see the frequency by both city and state, so we created to new data frames to look at this:
+We thought it might be interesting to see the frequency of jobs by location. We wanted to see the frequency by both city and state, so we created two new data frames to look at this:
 
 ```{r list_by_location, eval = TRUE, comment=NA}
 listings.city <- listings[,1:3]
@@ -570,16 +570,17 @@ head(locations.city[order(locations.city$Freq,decreasing = TRUE),],10)
 head(locations.state[order(locations.state$Freq,decreasing = TRUE),],10)
 ```
 
-Unexpectedly, we see that New York City does not have the most Data related jobs, but Princeton, NJ does. In addition, San Francisco is ranked 8th on the list, where we would expect it to be higher ranked that.
+We see states with the highest amount of data science jobs are New York, California, and the District of Columbia. This is expected, but it is also interesting to see that North Carolina, Ohio, and Vermont are have high frequencies of data science jobs.
 
-When we look at the results by state, we see that NJ has by far the most data related jobs, followed by California and New York. It is interesting that NJ has the most data jobs considering its small size compared to other states. However, it makes sense due to its close proximity to New York City.
+Looking at data science jobs by city, it is evident that New York/Manhattan are a hub for data scientists. However, Rensselaer also ranks highly in terms of quantity data science Jobs. Surprisingly, San Francisco is low on the list of data science job availability. 
+
 
 ##Conclusion
 
 Our examination of the data science job market involved us gathering and cleaning three datasets of job listings. After storing, importing, tidying, and analyzing the data, we learned that:
 
 1. Salaries tend to be higher for data jobs than non-data jobs.  
-2. The New York, California, and DC areas are a popular base for data science opportunities.  
+2. The New York, California, and DC areas are popular bases for data science opportunities.  
 3. Coveted data science skills include Python, R, SQL, Spark and Hadoop, among others.
 
 Future analysis of interest might delve into various trends of popularity. Overall, the current landscape appears bright for data scientists.
