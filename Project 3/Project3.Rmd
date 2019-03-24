@@ -4,7 +4,7 @@ author: "Mary Anna Kivenson"
 date: "3/17/2019"
 output:
   html_document:
-    highlight: pygments
+    h ighlight: pygments
     theme: united
     css: styles.css
     toc: true
@@ -36,6 +36,10 @@ library(zoo)
 library(ggplot2)
 library(knitr)
 ```
+
+##Introduction
+
+As current and future data scientists, we are keenly interested in the job market for data science. And we can, in fact, use data science to analyze said job market.For this project we procure and store three different datasets of job listings using a variety of methods. We tidy the data and then analyze and visualize it to get a better understanding. In particular, we examine matters such as salaries, locations, and coveted skills for data scientists.
 
 ##City Jobs Dataset
 
@@ -569,3 +573,13 @@ head(locations.state[order(locations.state$Freq,decreasing = TRUE),],10)
 Unexpectedly, we see that New York City does not have the most Data related jobs, but Princeton, NJ does. In addition, San Francisco is ranked 8th on the list, where we would expect it to be higher ranked that.
 
 When we look at the results by state, we see that NJ has by far the most data related jobs, followed by California and New York. It is interesting that NJ has the most data jobs considering its small size compared to other states. However, it makes sense due to its close proximity to New York City.
+
+##Conclusion
+
+Our examination of the data science job market involved us gathering and cleaning three datasets of job listings. After storing, importing, tidying, and analyzing the data, we learned that:
+
+1.Salaries tend to be higher for data jobs than non-data jobs.  
+2.The New York / New Jersey area is a popular base for data science opportunities.  
+3.Coveted data science skills include Python, R, SQL, Spark and Hadoop, amongothers.
+
+Future analysis of interest might delve into various trends of popularity. Overall, the current landscape appears bright for data scientists.
