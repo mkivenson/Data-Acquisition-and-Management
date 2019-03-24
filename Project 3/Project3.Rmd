@@ -244,11 +244,15 @@ We create a unique ID for each listing based on title, location, company, summar
 
 ```{r deduplicate}
 #create a unique id for each job posting attribute combination
-listings$uniqueid <- mapply(function(w, x, y, z) digest(paste0(w,x,y,z)), listings$title, listings$location, listings$company, listings$summary)
+listings$uniqueid <- mapply(function(x, y, z) digest(paste0(x,y,z)), listings$title, listings$location, listings$company)
 
 #remove duplicate unique ids
 listings %<>%
   distinct(uniqueid, .keep_all = TRUE)
+
+#remove duplicate links
+listings %<>%
+  distinct(link, .keep_all = TRUE)
 datatable(listings)
 ```
 
