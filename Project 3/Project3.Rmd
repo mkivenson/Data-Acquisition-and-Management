@@ -583,7 +583,7 @@ tools_pct %>% ggplot(aes(x=tool, y=mention_pct)) +
 ```
 
 #### Keyword Search for Technical Topics
-
+As we saw in the word cloud above, Machine Learning is a common term mentioned in Indeed Data Science job listings. Which other technical topics are mentioned in job listings? Below we see that modeling, statistics, and visualization are key topics for data scientists. Big data and cloud technologies also have their place in the field of data science.
 
 ```{r indeed_key3}
 #Big Data
