@@ -262,14 +262,14 @@ The summaries provided in the main job listing pages are somewhat limited. Links
 ```{r crawl, eval=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 #obtain full description for all job postings
 for (i in (1:length(listings$link))){
-  desciption <- tryCatch(
+  description <- tryCatch(
      html_text(html_node(read_html(as.character(listings$link[i])),'.jobsearch-JobComponent-description')),
      error=function(e){NA}
   )
-  if (is.null(desciption)){
+  if (is.null(description)){
     desc <- NA
   }
-  listings$description[i] <- desciption
+  listings$description[i] <- description
 }
 ```
 
@@ -306,10 +306,27 @@ if (!dbExistsTable(con, "listings")){
 }
 
 #Instead of dropping the table and creating a new one, we append records. Setting uniqueID as the primary key prevents us from appending duplicate job postings to the SQL database. This requires us to append a subset of job listings that are not duplicates. To do this, we import all uniqueid values from SQL and subset listings to exclude duplicates - then import into SQL.
-dupcheck <- "SELECT uniqueid FROM listings"
+dbWriteTable(con, "dup_listings", listings, row.names = FALSE)
+dupcheck <- "
+SELECT
+  uniqueid,
+  MAX(title) as title,
+  MAX(company) as company,
+  MAX(location) as location,
+  MAX(summary) as summary,
+  MAX(link) as link,
+  MAX(description) as description
+FROM dup_listings
+WHERE uniqueid NOT IN (SELECT uniqueid FROM listings)
+GROUP BY uniqueid;
+"
 dupcheck_results <- dbGetQuery(con, dupcheck)
-dbWriteTable(con, "listings", subset(listings, !(uniqueid %in% dupcheck_results$uniqueid)), append = TRUE, row.names = FALSE)
 
+if (nrow(dupcheck_results) > 0) {
+  dbWriteTable(con, "listings", dupcheck_results, append = TRUE, row.names = FALSE)
+}
+dbRemoveTable(con, "dup_listings")
+dbDisconnect(con)
 ```
 
 ### Import Job Listings from SQL Server 
