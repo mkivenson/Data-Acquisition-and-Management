@@ -453,11 +453,16 @@ SQL_listings_df <- results %>%
 scala_listings_df <- results %>% 
   filter(grepl(" Scala | Scala,", description, ignore.case=T) | grepl(" Scala | Scala,", summary, ignore.case=T))
 
-paste("R:",round(nrow(r_listings_df)/nrow(results),digits=2))
-paste("Python:",round(nrow(python_listings_df)/nrow(results),digits=2))
-paste("Java:",round(nrow(java_listings_df)/nrow(results),digits=2))
-paste("SQL:",round(nrow(SQL_listings_df)/nrow(results),digits=2))
-paste("Scala:",round(nrow(scala_listings_df)/nrow(results),digits=2))
+language_pct <- tibble(
+  language = c("R", "Python", "Java", "SQL", "Scala"), 
+  mention_pct = c(round(nrow(r_listings_df)/nrow(results),digits=2), 
+                  round(nrow(python_listings_df)/nrow(results),digits=2), 
+                  round(nrow(java_listings_df)/nrow(results),digits=2), 
+                  round(nrow(SQL_listings_df)/nrow(results),digits=2), 
+                  round(nrow(scala_listings_df)/nrow(results),digits=2)))
+language_pct %>% ggplot(aes(x=language, y=mention_pct)) + 
+  geom_bar(stat="identity", position=position_dodge(), fill="steelblue") + 
+  labs(x = "Language", y = "Percent Mentioned")
 ```
 
 
@@ -478,11 +483,16 @@ hadoop_listings_df <- results %>%
   filter(grepl(" hadoop | hadoop,", description, ignore.case=T) | grepl(" hadoop | hadoop,", summary, ignore.case=T))
 
 #SAS
-scala_listings_df <- results %>% 
+SAS_listings_df <- results %>% 
   filter(grepl(" sas | sas,", description, ignore.case=T) | grepl(" sas | sas,", summary, ignore.case=T))
 
-paste("Tableau:",round(nrow(tableau_listings_df)/nrow(results),digits=2))
-paste("Spark:",round(nrow(spark_listings_df)/nrow(results),digits=2))
-paste("Hadoop:",round(nrow(hadoop_listings_df)/nrow(results),digits=2))
-paste("SAS:",round(nrow(scala_listings_df)/nrow(results),digits=2))
+tools_pct <- tibble(
+  tool = c("Tableau", "Spark", "Hadoop", "SAS"), 
+  mention_pct = c(round(nrow(tableau_listings_df)/nrow(results),digits=2), 
+                  round(nrow(spark_listings_df)/nrow(results),digits=2), 
+                  round(nrow(hadoop_listings_df)/nrow(results),digits=2), 
+                  round(nrow(SAS_listings_df)/nrow(results),digits=2)))
+tools_pct %>% ggplot(aes(x=tool, y=mention_pct)) + 
+  geom_bar(stat="identity", position=position_dodge(), fill="maroon") + 
+  labs(x = "Tool", y = "Percent Mentioned")
 ```
