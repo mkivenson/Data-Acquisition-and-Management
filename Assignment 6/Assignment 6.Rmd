@@ -1,0 +1,75 @@
+---
+title: "New York Times Web APIs"
+author: "Mary Anna Kivenson"
+date: "3/30/2019"
+output:
+  html_document:
+    highlight: pygments
+    theme: united
+    css: styles.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+In this exercise, JSON data from New York Times APIs are read and transformed into an R dataframe. 
+
+## Books API
+The New York Times provides an API of its best sellings books, which is the first dataset we use. 
+```{r libraries, message=FALSE, warning=FALSE, include=FALSE}
+library(httr) #for httr requests
+library(jsonlite)
+library(tidyverse)
+library(DT)
+library(ggplot2)
+library(magrittr)
+```
+
+### Request
+First, we request data on current NYT Best Sellers. We use the httr library to retrieve the response specified by the API url. 
+```{r request, message=FALSE, warning=FALSE}
+url <- "https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=f5RHWlYOgGenjKxrLrkIkWLfVGjbZM9D"
+response <- GET(url) # Retrieve whatever is specified by the URL 
+response # Server response returned by function
+```
+
+### Content
+We then use the jsonlite package to transform the books json file into a dataframe. There is a nested json column, "isbns", that contains various types of isbns. We expand that column and then select relevent columns to preview the data. 
+```{r response, message=FALSE, warning=FALSE}
+json <- content(response, as="text")
+res <- jsonlite::fromJSON(json)
+books <- res[["results"]][["books"]]
+colnames(books)
+
+books$isbn10 <- books %>% select("isbns") %>% apply(1, FUN=function(v) v[["isbns"]][["isbn10"]])
+books$isbn13 <- books %>% select("isbns") %>% apply(1, FUN=function(v) v[["isbns"]][["isbn13"]])
+
+books %<>%
+unnest(isbn10, isbn13) %>% select(c("rank", "weeks_on_list", "author", "title", "amazon_product_url", "isbn10", "isbn13"))
+datatable(books)
+```
+
+## Popular Articles API
+There is another API that contains data on most popular New York Times articles in terms of amount of times emailed, shared on Facebook, and viewed.
+
+### Most Emailed
+```{r Emailed, message=FALSE, warning=FALSE}
+emailed <- content(GET("https://api.nytimes.com/svc/mostpopular/v2/emailed/7.json?api-key=f5RHWlYOgGenjKxrLrkIkWLfVGjbZM9D"), as="text")
+emailed <- jsonlite::fromJSON(emailed)
+datatable(as.data.frame(emailed))
+```
+
+
+### Most Shared
+```{r Shared, message=FALSE, warning=FALSE}
+shared <- content(GET("https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?api-key=f5RHWlYOgGenjKxrLrkIkWLfVGjbZM9D"), as="text")
+shared <- jsonlite::fromJSON(shared)
+datatable(as.data.frame(shared))
+```
+
+### Most Viewed
+```{r Viewed, message=FALSE, warning=FALSE}
+viewed <- content(GET("https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=f5RHWlYOgGenjKxrLrkIkWLfVGjbZM9D"), as="text")
+viewed <- jsonlite::fromJSON(viewed)
+datatable(as.data.frame(viewed))
+```
