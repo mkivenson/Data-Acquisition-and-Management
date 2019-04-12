@@ -1,0 +1,78 @@
+---
+title: "Discussion 11"
+author: "Mary Anna Kivenson"
+output:
+  html_document:
+    highlight: pygments
+    theme: united
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## LinkedIn Recommendation System
+
+### Scenario Design {.tabset .tabset-fade}
+
+#### LinkedIn Users 
+
+**1. Who are your target users?**
+
+Target users are companies and recruiters that are searching for candidates to fill open job postings, as well as professionals seeking employment.
+
+
+**2. What are their key goals?**
+
+The key goal of these target users is to accomplish virtual networking, whether it be finding a new job position, filling an open position, making new professional connections, or joining relevant groups.
+
+
+**3. How can you help them accompish these goals?**
+
+LinkedIn's recommendor system advises users on groups, job listings, and profiles that are similar to the information that you are viewing on LinkedIn. 
+
+
+#### LinkedIn Company
+
+**1. Who are your target users?**
+
+Target users are data scientists and engineers working at LinkedIn.
+
+
+**2. What are their key goals?**
+
+Their key goals are to promote the features of LinkedIn Premium (which has further recommendation features) and LinkedIn as whole.
+
+
+**3. How can you help them accompish these goals?**
+
+LinkedIn data scientists and engineers can review how its recommendation systems affect user activity and subcription.
+
+
+### Site Information {.tabset .tabset-fade}
+
+LinkedIn provides recommendations based on pages users view and also information submitted by users (for example, from the resume and experience a user uploads to the site). LinkedIn makes use of collaborative filtering, which provides recommendations based on the collective activity of similar users.
+
+
+#### People Also Viewed
+
+For the list of LinkedIn users below, LinkedIn uses collaborative filters to show similar profiles. It seems like people who viewed my profile also view profiles of other Con Edison employees. 
+
+![](https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Discussion/RecUsers.png)
+
+#### LinkedIn Learning
+
+The LinkedIn Learning site seems like it recommends videos based on the content of my profile - for example, I have Tableau listed as one of my skills, so Tableau classes are being recommended to me.
+
+![](https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Discussion/RecClasses.png)
+
+#### Suggested Jobs
+
+LinkedIn also recommends jobs for me based on my profile and career interests, so this is another content-based recommendor system. The site has a tile that asks whether the job recommendations are accurate - this allows LinkedIn to fine-tune its suggestions further. 
+
+![](https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Discussion/RecJobs.png)
+
+
+### Improvements
+
+LinkedIn is the ideal website for recommender systems, since user resumes and profiles allow for suggestions to be made before a user even vists any pages or job postings. The main improvement would be to implement more surveys to determine if user profile and class suggestions provided are relevant (similar to the survey that already exists for job recommendations).
