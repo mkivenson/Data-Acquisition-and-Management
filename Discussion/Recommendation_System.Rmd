@@ -76,3 +76,9 @@ LinkedIn also recommends jobs for me based on my profile and career interests, s
 ### Improvements
 
 LinkedIn is the ideal website for recommender systems, since user resumes and profiles allow for suggestions to be made before a user even vists any pages or job postings. The main improvement would be to implement more surveys to determine if user profile and class suggestions provided are relevant (similar to the survey that already exists for job recommendations).
+
+### Sources
+
+[Source on Types of Recommender Systems](https://www.iteratorshq.com/blog/an-introduction-recommender-systems-9-easy-examples/)  
+
+[Source on LinkedIn Recommender Systems](https://engineering.linkedin.com/recommender-systems/browsemap-collaborative-filtering-linkedin)
