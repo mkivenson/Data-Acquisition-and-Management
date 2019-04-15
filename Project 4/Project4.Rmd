@@ -6,7 +6,6 @@ output:
   html_document:
     highlight: pygments
     theme: united
-    css: styles.css
 ---
 
 ```{r setup, include=FALSE}
