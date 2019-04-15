@@ -62,10 +62,10 @@ reviews <- readr::read_csv(file = 'reviews.csv')
 
 ### Preview Data
 
-Now that we have the dataset imported, we can take apeak at the data. The column that contains the review is titled 'reviewText' and the column that indicates the rating associated with each review is 'reviewTime'.
+Now that we have the dataset imported, we can take a peak at the data. The column that contains the review is titled 'reviewText' and the column that indicates the rating associated with each review is 'reviewTime'.
 
 ```{r preview, echo=FALSE}
-datatable(head(reviews, n=5))
+summary(reviews)
 ```
 
 ### Word Summary
