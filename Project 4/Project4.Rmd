@@ -1,0 +1,201 @@
+---
+title: "Project 4"
+author: "Mary Anna Kivenson"
+date: "4/14/2019"
+output:
+  html_document:
+    highlight: pygments
+    theme: united
+    css: styles.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, message=FALSE, warning=FALSE}
+library(DT)
+library(tidytext)
+library(dplyr)
+library(stringr)
+library(sentimentr)
+library(ggplot2)
+library(RColorBrewer)
+library(readr)
+library(SnowballC)
+library(tm)
+library(wordcloud)
+library(reticulate)
+```
+
+## Import Data
+
+This project uses Amazon product reviews spanning May 1996 and July 2014 to determine whether text is positive or negative. We look specifically at video game reviews. Since the json code for video game reviews is not in strict json, we use python to convert to a pandas dataframe and then export that dataframe to csv.
+
+```{python eval=FALSE, include=TRUE}
+import pandas as pd
+import gzip
+
+def parse(path):
+  g = gzip.open(path, 'rb')
+  for l in g:
+    yield eval(l)
+
+def getDF(path):
+  i = 0
+  reviews = {}
+  for d in parse(path):
+    df[i] = d
+    i += 1
+  return pd.DataFrame.from_dict(df, orient='index')
+
+df = getDF('reviews_Video_Games_5.json.gz')
+
+df.to_csv(r'reviews.csv')
+```
+
+
+Next, we read that csv file into an R dataframe. 
+
+```{r games, message=FALSE, warning=FALSE}
+reviews <- readr::read_csv(file = 'reviews.csv')
+```
+
+### Preview Data
+
+Now that we have the dataset imported, we can take apeak at the data. The column that contains the review is titled 'reviewText' and the column that indicates the rating associated with each review is 'reviewTime'.
+
+```{r preview, echo=FALSE}
+datatable(head(reviews, n=5))
+```
+
+### Word Summary
+
+In order to begin analyzing the sentiment of each review, we look at the individual sentiments of each word. More speifically, we filter the reviews text to remove any punctuation and stop words then create an individual row for each word.
+
+```{r words, echo=FALSE, warning=FALSE}
+words <- reviews %>%
+  select(reviewerID, asin, overall, reviewText) %>%
+  unnest_tokens(word, reviewText) %>%
+  filter(!word %in% stop_words$word,
+         str_detect(word, "^[a-z']+$"))
+
+datatable(head(words), n=10)
+```
+
+## Sentiment Analysis with Afinn
+
+To predict the sentiment of words in this dataset, we use the Afinn list of English words and associated ratings. Each word is ranked from -5 to 5, where 5 is the most positive rating while -5 is the most negative. By joining the Afinn sentiment score with our reviews dataframe, we can compare the two methods of ranking words.
+
+```{r afinn, echo=FALSE}
+afinn <- get_sentiments("afinn") %>% mutate(word = wordStem(word))
+reviews.afinn <- words %>%
+  inner_join(afinn, by = "word")
+head(reviews.afinn)
+```
+
+### Most Common Words
+
+Here, we see the most common words and the average ratings and sentiment scores associated with each word. 
+
+```{r word_summary_table, echo=FALSE}
+word_summary <- reviews.afinn %>%
+  group_by(word) %>%
+  summarise(mean_rating = mean(overall), score = max(score), count_word = n()) %>%
+  arrange(desc(count_word))
+datatable(head(word_summary, n=10))
+```
+
+### Most Common Words View
+
+We can try to visualize the words associated with each amazon review rating and sentiment score. Most video game ratings fall between 3.5 and 4.5 in this amazon dataset, so we set this range as the filter. The plot below shows that many of these words are divided in two clusters: one with a positive sentiment score and one with a negative sentiment score. The quantity of words with positive Amazon ratings but negative sentiment scores is concerning, so we will look into the effect this has on sentiment by products later on.
+
+```{r word_summary_gg, echo=FALSE}
+ggplot(filter(word_summary, count_word < 50000), aes(mean_rating, score)) + geom_text(aes(label = word, color = count_word, size=count_word), position= position_jitter()) + scale_color_gradient(low = "lightblue", high = "darkblue") + coord_cartesian(xlim=c(3.5,4.5)) + guides(size = FALSE, color=FALSE)
+```
+
+#### Wordcloud: Overview
+
+We can look at high-frequency words in the word cloud below.
+
+```{r visualize_wc_com, echo=FALSE, message=FALSE, warning=FALSE}
+library(RColorBrewer)
+wordcloud(words = word_summary$word, freq = word_summary$count_word, scale=c(5,.5), max.words=300, colors=brewer.pal(8, "Set2"))
+```
+
+### Common Positive Words
+
+Let's also visualize only the positive words, determined by mean ratings of video games in this dataset - if the word rating is above the mean rating, we classify it as a positive word.
+
+```{r word_summary_pos, echo=FALSE}
+good <- reviews.afinn %>%
+  group_by(word) %>%
+  summarise(mean_rating = mean(overall), score = max(score), count_word = n()) %>%
+  filter(mean_rating>mean(mean_rating)) %>%
+  arrange(desc(mean_rating))
+wordcloud(words = good$word, freq = good$count_word, scale=c(5,.5), max.words=100, colors=brewer.pal(8, "Set2"))
+```
+
+### Common Negative Words
+
+How do negative words differ from the positive ones? Words were considered negative if their mean rating is below the overall mean amazon ratings for all words in this dataset.
+
+```{r word_summary_neg, echo=FALSE}
+bad <- reviews.afinn %>%
+  group_by(word) %>%
+  summarise(mean_rating = mean(overall), score = max(score), count_word = n()) %>%
+  filter(count_word>1000) %>%
+  filter(mean_rating<mean(mean_rating)) %>%
+  arrange(mean_rating)
+wordcloud(words = bad$word, freq = bad$count_word, scale=c(5,.5), max.words=100, colors=brewer.pal(8, "Set2"))
+```
+
+## Reviews by Product
+
+As mentioned earlier, we should investigate how the sentiment of individual words affects the overall sentiment rating of a product. To do this, we group by asin number (a unique identifier for each video game). Then, we establish the mean rating and mean sentiment of all words associated with ratings for that product. 
+
+```{r afinn_review_summary, echo=FALSE}
+review_summary <- reviews.afinn %>%
+  group_by(asin) %>%
+  summarise(mean_rating = mean(overall), sentiment = mean(score))
+datatable(head(review_summary, n=10))
+```
+
+### Visualizing Product Sentiment
+
+We can now plot the relationship between mean rating reviews and mean rating sentiments for products. To determine how successfully the afinn dictionary determined sentiment for this dataset, we divide the plot points into four quadrants:
+
+* Positive Review/Postive Sentiment
+* Negative Review/Positive Sentiment
+* Positive Review/Negative Sentiment
+* Negative Review/Negative Sentiment
+
+Successful quadrants are those in which the review and sentiment match. We see that there are more successful datapoints than unsuccessful datapoints, and that there is a weak positive relationship between the review rating and the sentiment. Despite this, there are significant inaccuracies in how words and products reviews are classified in this dataset. 
+
+```{r afinn_visualize, echo=FALSE}
+y_mid = 0
+x_mid = 3.5
+
+review_summary %>% 
+  mutate(quadrant = case_when(mean_rating > x_mid & sentiment > y_mid   ~ "Positive Review/Postive Sentiment",
+                              mean_rating <= x_mid & sentiment > y_mid  ~ "Negative Review/Positive Sentiment",
+                              mean_rating <= x_mid & sentiment <= y_mid ~ "Negative Review/Negative Sentiment",
+                              TRUE                                      ~ "Positive Review/Negative Sentiment")) %>% 
+  ggplot(aes(x = mean_rating, y = sentiment, color = quadrant)) + 
+  geom_hline(yintercept=y_mid, color = "black", size=.5) + 
+  geom_vline(xintercept=x_mid, color = "black", size=.5) +
+  guides(color=FALSE) +
+  scale_color_manual(values=c("lightgreen", "pink", "pink","lightgreen")) +
+  ggtitle("Amazon Product Rating vs Sentiment Rating of Review") +
+  ggplot2::annotate("text", x = 4.33, y=3.5,label="Positive Review/Postive Sentiment") +
+  ggplot2::annotate("text", x = 2, y=3.5,label="Negative Review/Positive Sentiment") +
+  ggplot2::annotate("text", x = 4.33, y=-2.5,label="Positive Review/Negative Sentiment") +
+  ggplot2::annotate("text", x = 2, y=-2.5,label="Negative Review/Negative Sentiment") +
+  geom_point()
+```
+
+### Data Source
+
+Ups and downs: Modeling the visual evolution of fashion trends with one-class collaborative filtering
+R. He, J. McAuley
+WWW, 2016
