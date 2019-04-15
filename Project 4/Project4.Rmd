@@ -80,7 +80,7 @@ words <- reviews %>%
   filter(!word %in% stop_words$word,
          str_detect(word, "^[a-z']+$"))
 
-datatable(head(words), n=10)
+datatable(head(words))
 ```
 
 ## Sentiment Analysis with Afinn
@@ -103,7 +103,7 @@ word_summary <- reviews.afinn %>%
   group_by(word) %>%
   summarise(mean_rating = mean(overall), score = max(score), count_word = n()) %>%
   arrange(desc(count_word))
-datatable(head(word_summary, n=10))
+datatable(head(word_summary))
 ```
 
 ### Most Common Words View
@@ -158,7 +158,7 @@ As mentioned earlier, we should investigate how the sentiment of individual word
 review_summary <- reviews.afinn %>%
   group_by(asin) %>%
   summarise(mean_rating = mean(overall), sentiment = mean(score))
-datatable(head(review_summary, n=10))
+datatable(head(review_summary))
 ```
 
 ### Visualizing Product Sentiment
