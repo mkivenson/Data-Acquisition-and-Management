@@ -1,0 +1,83 @@
+---
+title: "Assignment 7"
+author: "Mary Anna Kivenson"
+date: "4/28/2019"
+output:
+  html_document:
+    highlight: pygments
+    theme: united
+    toc: true
+    toc_float: true
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment 
+
+For this assignment, you should take information from a relational database and migrate it to a NoSQL database of your own choosing. 
+
+For the relational database, you might use the flights database, the tb database, the "data skills" database your team created for Project 3, or another database of your own choosing or creation.
+
+For the NoSQL database, you may use MongoDB (which we introduced in week 7), Neo4j, or another NoSQL database of your choosing.
+
+Your migration process needs to be reproducible.  R code is encouraged, but not required.  You should also briefly describe the advantages and disadvantages of storing the data in a relational database vs. your NoSQL database.
+
+## Overview
+
+I have used the **tb database** in **PostgreSQL** and migrated it into a **MongoDB** NoSQL database.
+
+
+```{r libraries}
+library(RPostgreSQL)
+library(DT)
+library(mongolite)
+```
+
+## Import from PostgreSQL
+
+To import the relational database from PostgreSQL, I retrieved all records using the RPostgreSQL library and saved my query results as "tb".
+
+```{r postgreSQL, message=FALSE, warning=FALSE}
+config <- config::get()
+
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, user=config$user, password=config$password, dbname=config$dbname, port = config$port, host= config$host)
+
+#Query to get all job listings from SQL database.
+sql <- " 
+    SELECT *
+    FROM tb
+"
+#Show query results
+tb <- dbGetQuery(con, sql)
+dbDisconnect(con)
+datatable(tb)
+```
+
+## Tranfer to MongoDB
+
+To transfer these records from PostgreSQL into MongoDB, we use the mongolite library and save the tb data under collection "tb".
+
+```{r mongo}
+mongo_url = paste0("mongodb+srv://",config$mongoaccount,":",config$mongopassword,"@data607-lsmtk.mongodb.net/test?retryWrites=true")
+tb_mongo <- mongo(collection = 'tb', url = mongo_url)
+tb_mongo$insert(tb)
+```
+
+Inserting these records into MongoDB results in data formatted in the following manner.
+
+![](https://raw.githubusercontent.com/mkivenson/Data-Acquisition-and-Management/master/Assignment%207/mongo.png)
+
+
+## Database Comparison
+
+* In a relational database, a pre-defined structure and schema ensures the integrity of databases. In NoSQL databases, a schema is not pre-defined, allowing for greater flexibility.
+
+* The original tb dataset in PostgreSQL is table-based with 3,800 rows while the resulting MongoDB collection is document-based with 3,800 documents.
+
+* SQL databases are vertically scalable, which means performance can only be improved by improving hardware. NoSQL databases are horizontally scalable, so they can be scaled by increasing the amount of servers used.
+
+* For the tb dataset, it seems to be more useful to view the data in a SQL server since it is important to be able to query this database. However, for hierarchical databases, it would be useful to use nested dictionaries in MongoDB. For graphical databases, it may be more ideal to use Neo4j.
