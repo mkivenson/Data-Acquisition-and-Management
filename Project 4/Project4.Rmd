@@ -25,6 +25,7 @@ library(SnowballC)
 library(tm)
 library(wordcloud)
 library(reticulate)
+library(crfsuite)
 ```
 
 ## Import Data
@@ -62,9 +63,9 @@ reviews <- readr::read_csv(file = 'reviews.csv')
 
 ### Preview Data
 
-Now that we have the dataset imported, we can take a peak at the data. The column that contains the review is titled 'reviewText' and the column that indicates the rating associated with each review is 'reviewTime'.
+Now that we have the dataset imported, we can take a peak at the data. The column that contains the review is titled 'reviewText' and the column that indicates the rating associated with each review is 'overall'.
 
-```{r preview, echo=FALSE}
+```{r preview}
 summary(reviews)
 ```
 
@@ -72,12 +73,11 @@ summary(reviews)
 
 In order to begin analyzing the sentiment of each review, we look at the individual sentiments of each word. More speifically, we filter the reviews text to remove any punctuation and stop words then create an individual row for each word.
 
-```{r words, echo=FALSE, warning=FALSE}
+```{r words, warning=FALSE}
 words <- reviews %>%
-  select(reviewerID, asin, overall, reviewText) %>%
+  select(c("reviewerID", "asin", "overall", "reviewText")) %>%
   unnest_tokens(word, reviewText) %>%
-  filter(!word %in% stop_words$word,
-         str_detect(word, "^[a-z']+$"))
+  filter(!word %in% stop_words$word, str_detect(word, "^[a-z']+$"))
 
 datatable(head(words))
 ```
@@ -86,7 +86,7 @@ datatable(head(words))
 
 To predict the sentiment of words in this dataset, we use the Afinn list of English words and associated ratings. Each word is ranked from -5 to 5, where 5 is the most positive rating while -5 is the most negative. By joining the Afinn sentiment score with our reviews dataframe, we can compare the two methods of ranking words.
 
-```{r afinn, echo=FALSE}
+```{r afinn}
 afinn <- get_sentiments("afinn") %>% mutate(word = wordStem(word))
 reviews.afinn <- words %>%
   inner_join(afinn, by = "word")
@@ -97,7 +97,7 @@ head(reviews.afinn)
 
 Here, we see the most common words and the average ratings and sentiment scores associated with each word. 
 
-```{r word_summary_table, echo=FALSE}
+```{r word_summary_table}
 word_summary <- reviews.afinn %>%
   group_by(word) %>%
   summarise(mean_rating = mean(overall), score = max(score), count_word = n()) %>%
@@ -109,7 +109,7 @@ datatable(head(word_summary))
 
 We can try to visualize the words associated with each amazon review rating and sentiment score. Most video game ratings fall between 3.5 and 4.5 in this amazon dataset, so we set this range as the filter. The plot below shows that many of these words are divided in two clusters: one with a positive sentiment score and one with a negative sentiment score. The quantity of words with positive Amazon ratings but negative sentiment scores is concerning, so we will look into the effect this has on sentiment by products later on.
 
-```{r word_summary_gg, echo=FALSE}
+```{r word_summary_gg}
 ggplot(filter(word_summary, count_word < 50000), aes(mean_rating, score)) + geom_text(aes(label = word, color = count_word, size=count_word), position= position_jitter()) + scale_color_gradient(low = "lightblue", high = "darkblue") + coord_cartesian(xlim=c(3.5,4.5)) + guides(size = FALSE, color=FALSE)
 ```
 
@@ -117,7 +117,7 @@ ggplot(filter(word_summary, count_word < 50000), aes(mean_rating, score)) + geom
 
 We can look at high-frequency words in the word cloud below.
 
-```{r visualize_wc_com, echo=FALSE, message=FALSE, warning=FALSE}
+```{r visualize_wc_com, message=FALSE, warning=FALSE}
 library(RColorBrewer)
 wordcloud(words = word_summary$word, freq = word_summary$count_word, scale=c(5,.5), max.words=300, colors=brewer.pal(8, "Set2"))
 ```
@@ -126,7 +126,7 @@ wordcloud(words = word_summary$word, freq = word_summary$count_word, scale=c(5,.
 
 Let's also visualize only the positive words, determined by mean ratings of video games in this dataset - if the word rating is above the mean rating, we classify it as a positive word.
 
-```{r word_summary_pos, echo=FALSE}
+```{r word_summary_pos}
 good <- reviews.afinn %>%
   group_by(word) %>%
   summarise(mean_rating = mean(overall), score = max(score), count_word = n()) %>%
@@ -139,7 +139,7 @@ wordcloud(words = good$word, freq = good$count_word, scale=c(5,.5), max.words=10
 
 How do negative words differ from the positive ones? Words were considered negative if their mean rating is below the overall mean amazon ratings for all words in this dataset.
 
-```{r word_summary_neg, echo=FALSE}
+```{r word_summary_neg}
 bad <- reviews.afinn %>%
   group_by(word) %>%
   summarise(mean_rating = mean(overall), score = max(score), count_word = n()) %>%
@@ -153,7 +153,7 @@ wordcloud(words = bad$word, freq = bad$count_word, scale=c(5,.5), max.words=100,
 
 As mentioned earlier, we should investigate how the sentiment of individual words affects the overall sentiment rating of a product. To do this, we group by asin number (a unique identifier for each video game). Then, we establish the mean rating and mean sentiment of all words associated with ratings for that product. 
 
-```{r afinn_review_summary, echo=FALSE}
+```{r afinn_review_summary}
 review_summary <- reviews.afinn %>%
   group_by(asin) %>%
   summarise(mean_rating = mean(overall), sentiment = mean(score))
@@ -171,7 +171,7 @@ We can now plot the relationship between mean rating reviews and mean rating sen
 
 Successful quadrants are those in which the review and sentiment match. We see that there are more successful datapoints than unsuccessful datapoints, and that there is a weak positive relationship between the review rating and the sentiment. Despite this, there are significant inaccuracies in how words and products reviews are classified in this dataset. 
 
-```{r afinn_visualize, echo=FALSE}
+```{r afinn_visualize}
 y_mid = 0
 x_mid = 3.5
 
