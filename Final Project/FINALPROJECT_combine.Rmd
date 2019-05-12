@@ -1,0 +1,528 @@
+---
+title: "Stock Analysis and Forecasting"
+author: "Mary Anna Kivenson"
+date: "5/4/2019"
+output:
+  html_document:
+    highlight: pygments
+    theme: united
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This project will use a trading data API to obtain historical stock price data to report on stock metrics and performace. The focus of this analysis will be to:
+
+- Import and tidy the stock trading API data for a stock of choice
+- Visualize trends and historical prices of the selected stock
+- Investigate google trends interest over time in the selected stock
+- Perform sentiment analysis on recent news articles about the selected stock
+- Create a time series forecasting model that uses historical stock prices to predict future trends
+- Develop a [Shiny application](https://mkivenson.shinyapps.io/Stock_Overview/) that condenses this information into a single dashboard for any selected stock
+- Perform a moving average analysis of Bitcoin metrics
+- Examine options volatility in the market
+
+### Libraries Used
+
+The following libraries were used for data clean-up, interacting with APIs, translating JSON to a datatable, text mining, web scraping, visualization, and forecasting.
+
+```{r libraries, message=FALSE, warning=FALSE}
+#data cleanup
+library(plyr)
+library(dplyr)
+library(tidyr)
+library(magrittr)
+library(stringr)
+library(lubridate)
+library(data.table)
+
+#API and json
+library(httr)
+library(jsonlite)
+library(config)
+
+#Web Scraping
+library(rvest)
+
+#Visualization
+library(plotly)
+library(ggplot2)
+library(DT)
+library(tibble)
+
+#Data
+library(devtools)
+library(gtrendsR)
+
+#Text Analysis
+library(tidytext)
+library(wordcloud)
+library(RColorBrewer)
+
+#Forecasting
+require(quantmod)
+require(derivmkts)
+library(forecast)
+library(tseries)
+library(prophet)
+
+library(knitr)
+```
+
+## Import Historical Stock Data
+
+To obtain historical stock data, the World Trading Data API is used. This report allows for the selection of any stock for analysis by changing the ticker saved to the 'symbol' variable. For the purpose of this project, the company Amazon (AMZN) is used.
+
+```{r stock-selection}
+symbol <- 'AMZN'
+```
+
+### World Trading Data API
+
+The World Trading Data API url inputs the selected symbol, the date range that is being requested, and a custom API token. To obtain a unique API token, please visit the [World Trading Data API Documentation](https://www.worldtradingdata.com/documentation).
+
+```{r api-set-up, warning=FALSE}
+config <- config::get()
+date_from = today()-dyears(5)
+
+URL <- paste0("https://www.worldtradingdata.com/api/v1/history?symbol=",symbol,
+              "&sort=newest&date_from=",date_from,
+              "&api_token=",config$stock_apikey)
+results <- GET(url = URL)
+```
+
+
+To extract the content from the results, the jsonlite package is used. The output of this file is one row with thousands of columns, so data pre-processing is required.
+
+
+```{r api-json, message=FALSE, warning=FALSE}
+content <- content(results, "text")
+content %<>%
+  fromJSON(flatten = TRUE) %>% #Flatten
+  as.data.frame() #Make dataframe
+
+#Number of columns
+ncol(content)
+```
+
+### Stock Data Pre-Processing
+
+To tidy the stock data, all price and volume data fields are gathered and arranged into a long datatable. Regular expressions, column filtering, and data type alterations are also done.
+
+```{r cleanup, warning=FALSE}
+#gather
+stock <- gather(content, "time","value",2:ncol(content)) 
+stock$value <- as.numeric(stock$value)
+
+#extract the date and metric into a new field
+stock$date <- as_date(str_extract(string = stock$time, pattern = "\\d{4}.\\d{2}.\\d{2}"))
+stock$metric <- str_extract(string = stock$time, pattern = "open|close|high|low|volume")
+
+#exclude the unneccessary column and spread metric columns
+stock %<>%
+  select(c(name, date, metric, value)) %>%
+  spread(metric, value)
+
+datatable(stock)
+```
+
+
+## Visualization
+
+Now that the stock dataset is tidied, a visualization of the price and volume time series can be created. For greater interactivity, plotly is used for this visualization.
+
+```{r visual}
+p1 <- stock %>%
+  plot_ly(x = ~date,
+          type = "candlestick", 
+          open = ~open, 
+          close = ~close, 
+          high = ~high,
+          low = ~low,
+          name = "price") %>%
+  layout(
+    xaxis = list(
+      rangeselector = list(
+        buttons = list(
+          list(
+            count = 1,
+            label = "1 mo",
+            step = "week",
+            stepmode = "backward"),
+          list(
+            count = 3,
+            label = "3 mo",
+            step = "month",
+            stepmode = "backward"),
+          list(
+            count = 6,
+            label = "6 mo",
+            step = "month",
+            stepmode = "backward"),
+          list(
+            count = 1,
+            label = "1 yr",
+            step = "year",
+            stepmode = "backward"),
+          list(
+            count = 3,
+            label = "3 yr",
+            step = "year",
+            stepmode = "backward"),
+          list(step = "all"))),
+      rangeslider = list(visible = FALSE)),
+         yaxis = list(title = "Price ($)",
+                      showgrid = TRUE,
+                      showticklabels = TRUE))
+p2 <- stock %>%
+  plot_ly(x=~date, y=~volume, type='bar', name = "Volume") %>%
+  layout(yaxis = list(title = "Volume"))
+
+p <- subplot(p1, p2, heights = c(0.7,0.3), nrows=2,
+             shareX = TRUE, titleY = TRUE) %>%
+  layout(title = paste0(symbol))
+p
+```
+
+
+## Google Trends
+
+Economic indicators are excellent predictors of future stock price, but what about Google search interest in the stock? Using the gtrendsr package, the following code queries interest over time for the selected stock over the previous five years and creates a visualization using plotly. 
+
+```{r trends-api, message=FALSE, warning=FALSE}
+trends <- gtrends(keyword = symbol, geo = "US", onlyInterest = TRUE)
+trends <- trends$interest_over_time %>%
+  as_data_frame() %>%
+  select(c(date, hits, keyword))
+trends$date <- as_date(ceiling_date(trends$date, unit = "weeks", change_on_boundary = NULL,
+                            week_start = getOption("lubridate.week.start", 1)))
+trends %>%  
+  plot_ly(x=~date, y=~hits, mode = 'lines', name = "Google Search Trends") %>%
+  layout(title = paste0("Interest over Time: ",symbol), yaxis = list(title = "hits"))
+```
+
+### Interest vs Price
+
+Using the google trends dataset, it is now possible to view the relationship between interest over time ('hits') and stock performance. To do this, a left join is used to combine trend and stock data by date. The outcome of the join is then used to plot the relationship between hits and stock close price (for Amazon, this relationship is somewhat linear).
+
+```{r trends-vs-price, message=FALSE, warning=FALSE}
+trends %>%
+  left_join(stock, by = "date") %>%
+  select(one_of(c("date", "hits", "close"))) %>%
+  drop_na() %>%
+  ggplot(aes(hits, close)) + geom_point(color="blue") + geom_smooth(model=lm, color = "black") +
+  labs(title =paste0(symbol,": Relationship between Hits and Close Stock Price"))
+```
+
+## Recent Stock News
+
+News articles provide excellent insight on the performance of each stock. The next step in this stock performance report is to import and perform sentiment analysis on recent news articles about the selected company.
+
+### Google News API
+
+To obtain news article data, the Google News API is used. The Google News API url inputs the company name (which is scraped from Marketwatch using the selected symbol). The date range inputed into the url requests the last 30 days of news article data. Finally, articles are sorted by relevance and 100 articles are requested using a custom API key. To obtain a unique API token, please visit the [Google News API Documentation](https://newsapi.org/docs). Once the API request is successful, jsonlite is used to transform the json data from the API into a dataframe.
+
+```{r news-api}
+##get company name using web-scraping
+url_overview = paste0("https://www.marketwatch.com/investing/stock/",symbol,"/profile")
+var_overview = read_html(url_overview)
+company <-  var_overview %>% 
+  html_nodes('#instrumentname') %>%
+  html_text() %>%
+  as.character()
+
+#news API Query
+url_news = paste0("https://newsapi.org/v2/everything?q=",
+                  str_replace_all(company,pattern = " ", replacement = "%20"),
+                  "&from=",today()-ddays(29), #last 30 days
+                  "&sortBy=relevance&pageSize=100&language=en&apiKey=",config$news_apikey)
+
+#API json to datatable
+results <- GET(url = url_news)
+news <- content(results, "text")
+news %<>%
+  fromJSON(flatten = TRUE) %>% #flatten
+  as.data.frame() %>% #make dataframe
+  select(c(articles.title, articles.description, articles.content, articles.publishedAt))
+datatable(news)
+```
+
+### News Sentiment Analysis
+
+Now that 100 recent news articles about the selected stock are available, text mining and sentiment analysis can be performed on this analysis.
+
+#### Word Cloud 
+
+The first step is to unnest each word in the article description, allowing for a 'bag of words' sentiment analysis approach. For a quick visualization of the most frequently used words, a word cloud is created.
+
+```{r news-sentiment-analysis, message=FALSE, warning=FALSE}
+news_words <- news %>%
+  select(c("articles.title","articles.description", "articles.content", "articles.publishedAt")) %>%
+  unnest_tokens(word, articles.description) %>%
+  filter(!word %in% append(stop_words$word, values = "chars"), str_detect(word, "^[a-z']+$"))
+news_words$date = as_date(news_words$articles.publishedAt)
+
+words_only <- news_words %>%
+  count(word, sort =TRUE)
+
+set.seed(1)
+wordcloud(words = words_only$word, freq = words_only$n, scale=c(5,.5), max.words=50, colors=brewer.pal(8, "Dark2"))
+```
+
+#### News Sentiment over Time
+
+To perform basic sentiment analysis, the afinn sentiment lexicon is used. This lexicon assigns scores to each word on a scale of -5 to 5. To view news sentiment about the selected company over the past month, the dataset is grouped by article and date and the score is summarised by the mean for each group. 
+```{r nrc, message=FALSE, warning=FALSE}
+afinn <- get_sentiments("afinn")
+
+sentiment_summary <- news_words %>%
+  left_join(afinn) %>%
+  filter(!is.na(score)) %>%
+  group_by(articles.title, date) %>%
+  summarise(score = mean(score)) %>%
+  mutate(sentiment = ifelse(score>0, "positive","negative")) 
+
+datatable(sentiment_summary)
+ggplot(sentiment_summary, aes(date, score)) + geom_bar(stat = "identity", aes(fill=sentiment))  + ggtitle(paste0(symbol, ": News Sentiment Over Time")) 
+```
+
+
+## Time Series Forecasting
+
+In the previous steps, various factors such as news sentiment and Google trends were analyzed. In this step, the Prophet API will be used to forecast future prices for the selected stock. 
+
+### Using Prophet
+
+Prophet is a software created by Facebook for forecasting time series data. For more information, please visit the [Prophet API Documentation](https://facebook.github.io/prophet/docs/quick_start.html#r-api). In this next step, the data is pre-processed to fit the requirements of Prophet and a prediction is created (accounting for the regular stock gaps on weekends). The output of the forecast is the date, forecasted close price, and the lower and upper confidence intervals based on an 80% confidence levels.
+
+```{r prophet, message=FALSE, warning=FALSE}
+#pre-processing
+df <- stock %>%
+  select(c("date","close")) %>%
+  rename(ds = date, y = close)
+
+#predictions
+m <- prophet(df)
+future <- make_future_dataframe(m, periods = 365) %>% filter(!wday(ds) %in% c(1,7)) #account for regular gaps on weekends
+forecast <- predict(m, future) 
+datatable(forecast[c('ds','yhat','yhat_lower','yhat_upper')])
+```
+
+### Prophet Forecast Results
+
+The results of the time series forecasting are plotted below. For most stocks, it seems like Prophet was able to capture the trends in close prices, but fails to forecast sharp changes in price.
+
+```{r prophet-plot}
+plot(m, forecast, xlabel = "date", ylabel = "stock close price ($)") + ggtitle(paste0(symbol, ": Stock Price Prediction"))
+```
+
+### Forecast Evaluation
+
+To further evaluate the forecast results, a residual plot is created. Based on the residual plot, it is evident that this forecast does not capture all of the variability in stock prices over time.
+
+```{r prophet2}
+forecast$ds <- as_date(forecast$ds)
+
+residuals <- df %>% 
+  left_join(forecast[c('ds','yhat','yhat_lower','yhat_upper')], by = "ds") %>%
+  filter(ds < today()) %>%
+  mutate(res = (y-yhat))
+datatable(residuals)
+ggplot(residuals, aes(ds, res)) + geom_point() + geom_hline(yintercept =0, color = "red") + labs(title ="Prophet Forecasting Residuals", x = "date", y = "residual") 
+```
+
+## Bitcoin Analysis
+
+Bitcoin has been a hot topic in stock trading. The potential for major returns, as well as the extreme unpredictability of the stock has caused much excitement and fear into investments. In this section, Bitcoin trade data was imported through a csv, which was provided by Yahoo Finance.
+
+```{r data_retrieval}
+bitcoin <- read.csv(url("https://raw.githubusercontent.com/rg563/DATA607/master/Projects/BTC_USD2.csv"),header=TRUE)
+bitcoin$Date <- as_date(bitcoin$Date)
+```
+
+One of the metrics that investors use to evaluate the stock market are the returns on a particular stock. The return of a stock at time $t$ can be calculated with the following equation:
+
+$\text{return}_{t,0} = \frac{\text{Stock Price}_{t}}{\text{Stock Price}_{0}}$
+
+where $0$ is the initial starting point of the stock. For example, if you wanted to know the return over the course of a week, the starting poing would be the closing price of last week's stock.
+
+However, for this analysis, we choose to measure the return of the stock everyday compared to the first time point we had. As shown in the plot, investors who purchase bitcoin in April 2014 saw an average return of 1 up until midway through 2016. The investors who held onto their stocks saw very large returns in 2018 where the ratio reached 45 before quickly shooting back down.
+
+```{r return}
+bitcoin.return <- bitcoin[,c("Date","Close")]
+bitcoin.return$Return <- bitcoin.return$Close/bitcoin.return[1,2] # calculate returns
+ggplot() + geom_line(data=bitcoin.return,aes(x=Date,y=Return)) + xlab('Time') + ylab('Return')
+```
+
+Another important metric for investors is the potential daily increase (or decrease). Most of the time, the daily change is measured by using the log difference, since this gives a percentage change in the stock. This is calculated using this simple formula:
+
+$\text{Change}_{t} = \text{log}(\text{Stock Price}_{t})-\text{log}(\text{Stock Price}_{t-1})$
+
+A for loop was used to go through all rows and calculate this, and then results were plotted as a function of time. As you can see from the graph, this data is very hard to gain anything substantial from. The graph on long term returns provides a much better platform for your return on investment. However, the log data becomes very important for modelling the behavior of the stock, so it would be useful in that situation.
+
+```{r logdiff, message=FALSE, warning=FALSE}
+logdiff <- vector() # initialize log difference
+for (i in 1:nrow(bitcoin.return)) {
+  if (i == 1) {
+    logdiff[i] <- NA
+  }
+  else {
+    logdiff[i] <- log(bitcoin.return[i,2]) - log(bitcoin.return[i-1,2])
+  }
+}
+bitcoin.return$LogDifference <- logdiff
+ggplot() + geom_line(data=bitcoin.return,aes(x=Date,y=LogDifference)) + xlab('Time') + ylab('Log Price Difference')
+```
+
+Finally, investors are extremely interested in the moving average of a stock. The reason this is an important function is because it eliminates a lot of the noise associated with the stock. The equation for moving average is shown below:
+
+$\text{Moving Average} = \frac{1}{n}\sum_{i=0}^{n-1} x_{t-i}$
+
+where $n$ is the number of days for the moving average. The number of days is dictated by the type of stock you have at hand. For stocks that are highly volatile and move fast, it is better to have a smaller $n$ to capture the behavior. However, stocks that aren't very volatile and progress over a long period of time would be better suited with a larger $n$. Most investors like to calculate the moving average for more than one value of $n$.
+
+In this analysis, the only value of $n$ selected was 20. As shown in the plot, we can see that behavior is very similar to that of the Return behavior. However, there is a lot less noise in the moving average plot. This is much easier for investors to visualize what is going on with their stocks.
+
+```{r moving_average, message=FALSE, warning=FALSE}
+n <- 20 # number of days for a moving average
+movavg <- vector() # initialize moving average vector
+for (i in 1:nrow(bitcoin.return)) {
+  if (i <= 20) {
+    movavg[i] <- NA
+  }
+  else {
+    sum <- 0
+    for (j in 1:n-1) {
+      sum <- sum + bitcoin.return[i-j,2]
+    }
+    movavg[i] <- (1/n)*sum
+  }
+}
+bitcoin.return$MovingAverage <- movavg
+ggplot() + geom_line(data=bitcoin.return,aes(x=Date,y=MovingAverage)) + xlab('Time') + ylab('Moving Average')
+```
+
+## Options Volatility
+
+We will now examine implied volatility in the market. We do this by acquiring data on ticker symbol SPY, which is an exchange-traded fund (ETF) that replicates the S&P 500 index. Using the underlying stock and options price data, we calculate and plot the volatility curve or "smile."
+
+###Define variables
+
+We set the ticker symbol to SPY and the interest rate to 2.25 percent.
+
+```{r define_var}
+interest_rate <- 0.0225
+symbol <- "SPY"
+```
+
+<br>
+
+###Get last closing price
+
+We use the quantmod package to look up historical stock prices and save the most recent closing price.
+
+```{r close_price, message=FALSE, warnings=FALSE}
+price_df <- getSymbols(symbol, auto.assign=F, from=Sys.Date()-3) %>% as.data.frame()
+names(price_df) <- names(price_df) %>% gsub(paste0(symbol, "\\."), "", .)
+price_df <- price_df %>% 
+  rownames_to_column(var="Date") %>% 
+  mutate(Date=as.Date(Date)) %>% 
+  arrange(desc(Date)) %>% slice(1)
+stock_price <- price_df$Close
+price_df %>% head() %>% kable()
+```
+
+<br>
+
+###Get dividend info
+
+We look up the empirical dividend stream and convert it into a yield percent (to plug into the options pricing model.)
+
+```{r get_div, message=FALSE, warnings=FALSE}
+div_df <- getDividends(symbol, from = Sys.Date()-365, to=Sys.Date()) %>% as.data.frame()
+names(div_df) <- names(div_df) %>% gsub(paste0(symbol, "\\."), "", .)
+div_df <- div_df %>% rownames_to_column(var="Date") %>% mutate(Date=as.Date(Date))
+div_yield <- suppressWarnings( tryCatch( sum(div_df$div)/stock_price, error=function(e) 0))
+div_yield
+```
+
+<br>
+
+###Get options chain
+
+We use the quantmod package to retrieve options prices from Yahoo Finance. The implied volatility values are often missing or incorrect, so we will calculate them ourselves using the Black-Scholes formula from the derivmkts package. We do that by looping through the list of options and using the necessary information as inputs - stock price, strike, option type and price, time to expiration, dividend yield, and interest rate.
+
+```{r get_options, results="hide", message=FALSE, warnings=FALSE}
+### Get option prices
+option_chain_list <- getOptionChain(Symbols = symbol, Exp = NULL)
+option_chain_df <- data.frame()
+
+for (i in 1:length(option_chain_list)){
+  if (!is.null(option_chain_list[[i]]$calls) & !is.null(option_chain_list[[i]]$puts)){
+
+    exp <- names(option_chain_list)[[i]] %>% as.Date(., format="%b.%d.%Y")
+    t <- (as.numeric(exp-Sys.Date()))/365
+    call_df <- option_chain_list[[i]]$calls %>% mutate(callput="call", time=t, exp=exp)
+    put_df <- option_chain_list[[i]]$puts %>% mutate(callput="put", time=t, exp=exp)
+
+    ### Calculate Implied Vol
+    bidIV <- vector()
+    askIV <- vector()
+    for (k in 1:nrow(call_df)){
+      bidIV[k] <- tryCatch(bscallimpvol(s=stock_price, k=call_df$Strike[k], r=interest_rate, tt=call_df$time[k],
+                                        d=div_yield, price=call_df$Bid[k]), error=function(e) NA)
+      askIV[k] <- tryCatch(bscallimpvol(s=stock_price, k=call_df$Strike[k], r=interest_rate, tt=call_df$time[k],
+                                        d=div_yield, price=call_df$Ask[k]), error=function(e) NA)
+    }
+    call_df <- call_df %>% mutate(bidIV=suppressWarnings(as.numeric(bidIV)),
+                                  askIV=suppressWarnings(as.numeric(askIV)), midIV=(bidIV+askIV)/2)
+    bidIV <- vector()
+    askIV <- vector()
+    for (k in 1:nrow(put_df)){
+      bidIV[k] <- tryCatch(bsputimpvol(s=stock_price, k=put_df$Strike[k], r=interest_rate, tt=put_df$time[k],
+                                       d=div_yield, price=put_df$Bid[k]), error=function(e) NA)
+      askIV[k] <- tryCatch(bsputimpvol(s=stock_price, k=put_df$Strike[k], r=interest_rate, tt=put_df$time[k],
+                                       d=div_yield, price=put_df$Ask[k]), error=function(e) NA)
+    }
+    put_df <- put_df %>% mutate(bidIV=suppressWarnings(as.numeric(bidIV)),
+                                askIV=suppressWarnings(as.numeric(askIV)), midIV=(bidIV+askIV)/2)
+
+    option_chain_df <- rbind.fill(option_chain_df, call_df, put_df)
+  }
+}
+```
+
+```{r display_option_df}
+option_chain_df <- option_chain_df %>% 
+  filter(!is.na(midIV)) %>% mutate(underlying=symbol,
+                                   stock_price=stock_price,
+                                   price_date = price_df$Date)
+option_chain_df %>% head() %>% kable()
+```
+
+<br>
+
+###Plot volatility curve
+
+We use ggplot to show the volatility smile and term structure for all options expirations between three and nine months out.
+
+```{r plot_vol}
+option_chain_df %>% 
+  filter(exp>Sys.Date()+90, 
+         exp<Sys.Date()+270, 
+         Strike>=stock_price & callput=="call" | Strike<stock_price & callput=="put", 
+         OI>1000, 
+         Bid>=0.25) %>% 
+  mutate(Expiration=as.character(exp), midIV=midIV*100) %>% 
+  ggplot(aes(x=Strike, y=midIV, colour=Expiration)) + geom_line() + labs(title=paste0(symbol, " Options Implied Volatility by Expiration and Strike"), x="Strike Price", y="Mid-Market Implied Volatility")
+```
+
+We see that implied volatility is higher at lower strike prices than higher strike prices. This phenomenon is what options traders refer to as "volatility skew."  
+
+Theoretically the Black-Scholes model considers volatility to be a single constant number. It assumes that stock price movement percentages are normally distributed.  
+
+If the options market agreed with that assumption, every strike price would have the same implied volatility. We can see from the plot that this is clearly not the case. Because the market believes the true underlying distribution of stock price movement has a "fatter" left tail than normal, lower strikes trade at a higher price, and therefore higher implied volatility, than Black-Scholes would calculate.
