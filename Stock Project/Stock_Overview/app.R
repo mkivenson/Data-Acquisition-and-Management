@@ -131,7 +131,7 @@ sidebar <- dashboardSidebar(
       menuItem("Interest Over Time", tabName = "interest", icon = icon("hashtag")),
       menuItem("News Analysis", tabName = "news", icon = icon("newspaper")),
       menuItem("Forecast", tabName = "forecast", icon = icon("hourglass")),
-      menuItem("Repository", href = "https://github.com/mkivenson/Data-Acquisition-and-Management/tree/master/Final%20Project", icon = icon("github"))
+      menuItem("Repository", href = "https://github.com/mkivenson/Data-Acquisition-and-Management/tree/master/Stock%20Project", icon = icon("github"))
     )
   )
 
