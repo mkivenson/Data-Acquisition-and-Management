@@ -1,7 +1,7 @@
 ---
 title: "Stock Analysis and Forecasting"
-author: "Mary Anna Kivenson"
-date: "5/4/2019"
+author: "TEAM MARS"
+date: "5/12/2019"
 output:
   html_document:
     highlight: pygments
@@ -458,7 +458,19 @@ We use the quantmod package to retrieve options prices from Yahoo Finance. The i
 
 ```{r get_options, results="hide", message=FALSE, warnings=FALSE}
 ### Get option prices
-option_chain_list <- getOptionChain(Symbols = symbol, Exp = NULL)
+#option_chain_list <- getOptionChain(Symbols = symbol, Exp = NULL)
+
+urlExp <- paste0("https://query2.finance.yahoo.com/v7/finance/options/", symbol)
+tbl <- jsonlite::fromJSON(urlExp)
+all.expiries <- tbl$optionChain$result$expirationDates[[1]]
+all.expiries.posix <- .POSIXct(as.numeric(all.expiries), tz="UTC")
+
+testFunction <- function (date_in) {
+  return(tryCatch(getOptionChain(Symbols = symbol, Exp = date_in), error=function(e) NULL))
+}
+
+option_chain_list <- lapply(all.expiries.posix, testFunction)
+option_chain_list <- setNames(option_chain_list, format(all.expiries.posix, "%b.%d.%Y"))
 option_chain_df <- data.frame()
 
 for (i in 1:length(option_chain_list)){
